@@ -11,7 +11,7 @@ import Button from "../../ui/Button";
 import ErrorPanel from '../../ui/ErrorPanel';
 
 import budgetModel from "./budgetModel";
-import { validateDates } from '../../utils/validation/form-validation';
+import validate from '../../utils/validation/form-validation';
 
 function NewBudget() {
     const { setIsLoading } = useContext(LoaderContext);
@@ -26,20 +26,20 @@ function NewBudget() {
         formData.forEach((value, key) => {
             switch(key) {
                 case 'initialBalance':
-                    newBudget[key] = Number(value);
-                    newBudget['currentBalance'] = Number(value);
+                    newBudget[key] = Number(value).toFixed(2) * 1;
+                    newBudget['currentBalance'] = Number(value).toFixed(2) * 1;
                     break;
                 default:
                     newBudget[key] = value;
             }
         });
 
-        const dateValidation = validateDates(newBudget.startDate, newBudget.endDate);
-        if (!dateValidation.status) {
-            handleError(true, dateValidation.msg);
+        const validation = validate('Budget', newBudget);
+        if (validation.validationError) {
+            handleError(true, validation.validationMsg);
             return;
         }
-    
+
         handleError(false);
         setIsLoading((curr) => !curr);
         setTimeout(() => {
@@ -52,10 +52,10 @@ function NewBudget() {
 
     return (
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-            <Input type="text" name="name" placeholder="Type in a name for the budget" required >Id</Input>
-            <Input type="number" name="initialBalance" placeholder="Assign an initial balance" min="0" required >Initial balance</Input>
-            <Input type="date" name="startDate" placeholder="Select start date" required >Start date</Input>
-            <Input last={true} type="date" name="endDate" required >Start date</Input>
+            <Input type="text" name="name" placeholder="Type in a name for the budget">Id</Input>
+            <Input type="number" step="0.0000001" name="initialBalance" placeholder="Assign an initial balance">Initial balance</Input>
+            <Input type="date" name="startDate" placeholder="Select start date">Start date</Input>
+            <Input last={true} type="date" name="endDate">Start date</Input>
 
             {error && <ErrorPanel content={msg} onClosePanel={handleError} />}
 

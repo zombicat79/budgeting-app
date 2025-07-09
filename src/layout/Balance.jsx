@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 function Balance() {
     const { name } = useParams();
     const allBudgets = useSelector((store) => store.budgets);
-    console.log(allBudgets)
 
     let available, income, expenses;
     if (name) {
@@ -36,9 +35,9 @@ function Balance() {
                 {name ? `${name} account` : 'Master account'}
             </h3>
             <div className="flex justify-between items-center">
-                <h3 className="text-[1.5rem] text-emerald-800 font-bold">{income} €</h3>
-                <h3 className="text-[2rem] font-bold">{available} €</h3>
-                <h3 className="text-[1.5rem] text-red-700 font-bold">{expenses} €</h3>
+                <h3 className="text-[1.5rem] text-emerald-800 font-bold">{income.toFixed(2)} €</h3>
+                <h3 className="text-[2rem] font-bold">{available.toFixed(2)} €</h3>
+                <h3 className="text-[1.5rem] text-red-700 font-bold">{expenses.toFixed(2)} €</h3>
             </div>
         </>
     )

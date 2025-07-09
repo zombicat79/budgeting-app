@@ -1,17 +1,72 @@
+function validateName(name) {
+    if (!name) {
+        return { status: false, msg: `ID field cannot be empty` };
+    }
+
+    if (name.length > 20) {
+        return { status: false, msg: `ID must have less than 20 characters` };
+    }
+    
+    return { status: true, msg: 'ok' };
+}
+
+function validateAmount(context, amount) {
+    if (amount === 0) {
+        if (context === 'Budget') {
+            return { status: false, msg: `INITIAL BALANCE cannot be empty and must be greater than ${amount}` };
+        } else {
+            return { status: false, msg: `${context} amount cannot be empty and must be greater than ${amount}` };
+        }
+    }
+
+    if (amount < 0) {
+        return { status: false, msg: `${context} amount does not accept negative numbers` };
+    }
+    
+    return { status: true, msg: 'ok' };
+}
+
 function validateDates(start, end) {
     const presentDate = new Date();
     const startDate = new Date(start);
     const endDate = new Date(end);
 
+    if (!start) {
+        return { status: false, msg: `START DATE field cannot be empty` };
+    }
+
+    if (!end) {
+        return { status: false, msg: `END DATE field cannot be empty` };
+    }
+
     if (startDate < presentDate && startDate.getDay() < presentDate.getDay()) {
-        return { status: false, msg: 'Start date cannot be set earlier than the present date.' };
+        return { status: false, msg: 'START DATE cannot be set earlier than the present date.' };
     }
 
     if (startDate > endDate) {
-        return { status: false, msg: 'End date cannot be set earlier than the start date.' };
+        return { status: false, msg: 'END DATE cannot be set earlier than the start date.' };
     }
 
     return { status: true, msg: 'ok' };
 }
 
-export { validateDates };
+function validate(context, data) {
+    const nameValidation = validateName(data.name);
+    if (!nameValidation.status) {
+        return { validationError: true, validationMsg: nameValidation.msg };
+    }
+
+    const amountValidation = validateAmount(context, data.initialBalance);
+    if (!amountValidation.status) {
+        return { validationError: true, validationMsg: amountValidation.msg };
+    }
+
+    const dateValidation = validateDates(data.startDate, data.endDate);
+    if (!dateValidation.status) {
+        return { validationError: true, validationMsg: dateValidation.msg };
+    }
+
+    return { validationError: false, validationMsg: 'ok'};
+}
+
+export default validate;
