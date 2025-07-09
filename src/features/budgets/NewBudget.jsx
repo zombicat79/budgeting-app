@@ -4,25 +4,23 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { addBudget } from "./budgetReducer";
+import useError from './../../hooks/useError';
 
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
+import ErrorPanel from '../../ui/ErrorPanel';
 
 import budgetModel from "./budgetModel";
+import { validateDates } from '../../utils/validation/form-validation';
 
 function NewBudget() {
     const { setIsLoading } = useContext(LoaderContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { error, msg, handleError } = useError();
 
     function handleSubmit(event) {
         event.preventDefault();
-        setIsLoading((curr) => !curr);
-        setTimeout(() => {
-            setIsLoading((curr) => !curr);
-            navigate('/budgets')
-        }, 3000);
-
         const formData = new FormData(event.target);
         const newBudget = {...budgetModel, id: uuidv4()};
         formData.forEach((value, key) => {
@@ -36,15 +34,30 @@ function NewBudget() {
             }
         });
 
+        const dateValidation = validateDates(newBudget.startDate, newBudget.endDate);
+        if (!dateValidation.status) {
+            handleError(true, dateValidation.msg);
+            return;
+        }
+    
+        handleError(false);
+        setIsLoading((curr) => !curr);
+        setTimeout(() => {
+            setIsLoading((curr) => !curr);
+            navigate('/budgets')
+        }, 3000);
+
         dispatch(addBudget(newBudget));
     }
 
     return (
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <Input type="text" name="name" placeholder="Type in a name for the budget" required >Id</Input>
-            <Input type="number" name="initialBalance" placeholder="Assign an initial balance" required >Initial balance</Input>
+            <Input type="number" name="initialBalance" placeholder="Assign an initial balance" min="0" required >Initial balance</Input>
             <Input type="date" name="startDate" placeholder="Select start date" required >Start date</Input>
             <Input last={true} type="date" name="endDate" required >Start date</Input>
+
+            {error && <ErrorPanel content={msg} onClosePanel={handleError} />}
 
             <Button>Create Budget</Button>
         </form>
