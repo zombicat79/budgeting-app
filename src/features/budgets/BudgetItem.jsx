@@ -28,7 +28,7 @@ function BudgetItem({ budgetData }) {
                     <p className="uppercase font-bold">{name}</p>
                     <p>from {startDate} to {endDate}</p> 
                 </div>
-                <Link to={`/budgets/${name}`}>
+                <Link to={`/budgets/${id}`}>
                     <Button>See</Button>
                 </Link>
             </div>

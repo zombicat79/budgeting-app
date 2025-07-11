@@ -12,6 +12,7 @@ import ErrorPanel from '../../ui/ErrorPanel';
 
 import budgetModel from "./budgetModel";
 import validate from '../../utils/validation/form-validation';
+import { goTop } from '../../utils/layout/scroll-management';
 
 function NewBudget() {
     const { setIsLoading } = useContext(LoaderContext);
@@ -19,7 +20,7 @@ function NewBudget() {
     const navigate = useNavigate();
     const { error, msg, handleError } = useError();
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const newBudget = {...budgetModel, id: uuidv4()};
@@ -41,11 +42,14 @@ function NewBudget() {
         }
 
         handleError(false);
-        setIsLoading((curr) => !curr);
+        setTimeout(() => {
+            setIsLoading((curr) => !curr);
+        }, 500);
+        goTop();
         setTimeout(() => {
             setIsLoading((curr) => !curr);
             navigate('/budgets')
-        }, 3000);
+        }, 2500);
 
         dispatch(addBudget(newBudget));
     }
@@ -55,7 +59,7 @@ function NewBudget() {
             <Input type="text" name="name" placeholder="Type in a name for the budget">Id</Input>
             <Input type="number" step="0.0000001" name="initialBalance" placeholder="Assign an initial balance">Initial balance</Input>
             <Input type="date" name="startDate" placeholder="Select start date">Start date</Input>
-            <Input last={true} type="date" name="endDate">Start date</Input>
+            <Input last={true} type="date" name="endDate">End date</Input>
 
             {error && <ErrorPanel content={msg} onClosePanel={handleError} />}
 

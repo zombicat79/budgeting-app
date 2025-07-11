@@ -4,7 +4,7 @@ import Balance from './Balance';
 
 function Header() {
     return (
-        <header className="fixed top-0 right-0 left-0 titillium-web-regular">
+        <header className="sticky top-0 right-0 z-10 left-0 titillium-web-regular">
             <div className="flex justify-between items-center bg-cyan-700 text-white p-[1rem]">
                 <svg className="w-full max-w-[5rem]" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Menu</title> <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"> <g id="Menu"> <rect id="Rectangle" fillRule="nonzero" x="0" y="0" width="24" height="24"> </rect> <line x1="5" y1="7" x2="19" y2="7" id="Path" stroke="#ffffff" strokeWidth="2" strokeLinecap="round"> </line> <line x1="5" y1="17" x2="19" y2="17" id="Path" stroke="#ffffff" strokeWidth="2" strokeLinecap="round"> </line> <line x1="5" y1="12" x2="19" y2="12" id="Path" stroke="#ffffff" strokeWidth="2" strokeLinecap="round"> </line> </g> </g> </g></svg>
                 <Link to="/">

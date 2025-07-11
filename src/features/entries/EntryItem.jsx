@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 function EntryItem({ entryData }) {
-    const { name, amount, isExpense } = entryData;
+    const { description, amount, isExpense } = entryData;
 
     const buildCSSClasses = useCallback((baseClass) => {
         let classes = baseClass;
@@ -17,7 +17,7 @@ function EntryItem({ entryData }) {
         <li className="entry-item">
             <div className={buildCSSClasses('entry-item')}>
                 <p>
-                    <span>{name}</span>
+                    <span>{description}</span>
                     <span>{amount}</span>
                 </p>
             </div>

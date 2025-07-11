@@ -9,7 +9,7 @@ function BudgetList() {
 
     if (!budgetList || budgetList.length === 0) {
         return (
-            <div>
+            <div className="relative top-50">
                 <p>No budgets found</p>
                 <p className="mb-[1rem]">Please create a new budget</p>
                 <Link to="/budgets/create">

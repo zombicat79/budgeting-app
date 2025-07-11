@@ -15,7 +15,7 @@ function MainLayout() {
             {isLoading && <Loader />}
             <Header />
             {location.pathname !== "/" && <GoBack />}
-            <main className="titillium-web-regular h-full place-content-center px-[3rem] pt-[8rem] pb-[2rem]">
+            <main className="titillium-web-regular h-screen px-[3rem] py-[10rem]">
                 <Outlet />
             </main>
             <Footer />

@@ -1,7 +1,10 @@
 const entriesModel = {
-    name: '',
+    id: '',
+    description: '',
     amount: 0,
-    isExpense: false,
+    inputDate: null,
+    isExpense: true,
+    category: ''
 }
 
 export default entriesModel;

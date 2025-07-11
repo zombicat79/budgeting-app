@@ -25,8 +25,8 @@ function App() {
           <Route path="budgets" >
             <Route index element={<BudgetList />} />
             <Route path="create" element={<NewBudget />} />
-            <Route path=":name" element={<EntryList />} />
-            <Route path=":name/create-entry" element={<NewEntry />} />
+            <Route path=":budgetId" element={<EntryList />} />
+            <Route path=":budgetId/create-entry" element={<NewEntry />} />
           </Route>
         </Route>
       </Routes>

@@ -2,13 +2,14 @@ import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 function Balance() {
-    const { name } = useParams();
+    const { budgetId } = useParams();
     const allBudgets = useSelector((store) => store.budgets);
 
-    let available, income, expenses;
-    if (name) {
+    let budgetName, available, income, expenses;
+    if (budgetId) {
         for (let budget of allBudgets) {
-            if (budget.name === name) {
+            if (budget.id === budgetId) {
+                budgetName = budget.name;
                 available = budget.currentBalance;
                 income = budget.income;
                 expenses = budget.expenses;
@@ -30,9 +31,9 @@ function Balance() {
         <>
             <h3 
                 className="text-[2.5rem] font-bold"
-                title={name ? `Ongoing balance for ${name} budget` : 'Accumulated general balance for all existing budgets'}
+                title={budgetId ? `Ongoing balance for ${budgetName} budget` : 'Accumulated general balance for all existing budgets'}
             >
-                {name ? `${name} account` : 'Master account'}
+                {budgetId ? `${budgetName} account` : 'Master account'}
             </h3>
             <div className="flex justify-between items-center">
                 <h3 className="text-[1.5rem] text-emerald-800 font-bold">{income.toFixed(2)} €</h3>
