@@ -48,7 +48,7 @@ function NewBudget() {
         goTop();
         setTimeout(() => {
             setIsLoading((curr) => !curr);
-            navigate('/budgets')
+            navigate('/budgets?new=true')
         }, 2500);
 
         dispatch(addBudget(newBudget));

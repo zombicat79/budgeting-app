@@ -33,7 +33,7 @@ function Balance() {
                 className="text-[2.5rem] font-bold"
                 title={budgetId ? `Ongoing balance for ${budgetName} budget` : 'Accumulated general balance for all existing budgets'}
             >
-                {budgetId ? `${budgetName} account` : 'Master account'}
+                {budgetId ? `${budgetName} budget entries` : 'Master account'}
             </h3>
             <div className="flex justify-between items-center">
                 <h3 className="text-[1.5rem] text-emerald-800 font-bold">{income.toFixed(2)} €</h3>

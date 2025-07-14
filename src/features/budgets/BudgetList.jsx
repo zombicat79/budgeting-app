@@ -21,8 +21,12 @@ function BudgetList() {
 
     return (
         <ul>
-        {budgetList.map((budget) => {
-            return <BudgetItem key={budget.name} budgetData={budget} />
+        {budgetList.map((budget, index) => {
+            let last = false;
+            if (index === budgetList.length-1) {
+                last = true;
+            }
+            return <BudgetItem key={budget.id} budgetData={budget} last={last} />
         })}
         </ul>
     );

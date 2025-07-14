@@ -1,10 +1,10 @@
-function validateName(name) {
+function validateName(context, name) {
     if (!name) {
-        return { status: false, msg: `ID field cannot be empty` };
+        return { status: false, msg: context === 'Budget' ? `ID field cannot be empty` : `Description field cannot be empty` };
     }
 
     if (name.length > 20) {
-        return { status: false, msg: `ID must have less than 20 characters` };
+        return { status: false, msg: context === 'Budget' ? `ID must have less than 20 characters` : `Description must have less than 20 characters` };
     }
     
     return { status: true, msg: 'ok' };
@@ -39,7 +39,7 @@ function validateDates(start, end) {
         return { status: false, msg: `END DATE field cannot be empty` };
     }
 
-    if (startDate < presentDate && startDate.getDay() < presentDate.getDay()) {
+    if (startDate < presentDate && startDate.getDate() < presentDate.getDate()) {
         return { status: false, msg: 'START DATE cannot be set earlier than the present date.' };
     }
 
@@ -50,18 +50,41 @@ function validateDates(start, end) {
     return { status: true, msg: 'ok' };
 }
 
+function validateInputDate(date) {
+    const presentDate = new Date();
+    const inputDate = new Date(date);
+
+    if (!date) {
+        return { status: false, msg: `DATE field cannot be empty` };
+    }
+
+    if (inputDate < presentDate && inputDate.getDate() < presentDate.getDate()) {
+        return { status: false, msg: 'DATE cannot be set earlier than the present date.' };
+    }
+
+    return { status: true, msg: 'ok' };
+}
+
 function validate(context, data) {
-    const nameValidation = validateName(data.name);
+    const descriptiveData = data.name || data.description;
+    const nameValidation = validateName(context, descriptiveData);
     if (!nameValidation.status) {
         return { validationError: true, validationMsg: nameValidation.msg };
     }
 
-    const amountValidation = validateAmount(context, data.initialBalance);
+    const amountData = data.initialBalance || data.amount;
+    const amountValidation = validateAmount(context, amountData);
     if (!amountValidation.status) {
         return { validationError: true, validationMsg: amountValidation.msg };
     }
 
-    const dateValidation = validateDates(data.startDate, data.endDate);
+    let dateValidation;
+    if (context === 'Budget') {
+        dateValidation = validateDates(data.startDate, data.endDate);
+    } else {
+        console.log(data)
+        dateValidation = validateInputDate(data.inputDate);
+    }
     if (!dateValidation.status) {
         return { validationError: true, validationMsg: dateValidation.msg };
     }

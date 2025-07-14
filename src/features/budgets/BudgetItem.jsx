@@ -3,7 +3,10 @@ import { Link } from 'react-router';
 
 import Button from './../../ui/Button'
 
-function BudgetItem({ budgetData }) {
+import { getUrlParams } from './../../utils/navigation/navigation-management';
+
+function BudgetItem({ budgetData, last }) {
+    const params = getUrlParams();
     const { 
         id, name, entries, intitialBalance, 
         currentBalance, startDate, endDate, 
@@ -23,6 +26,11 @@ function BudgetItem({ budgetData }) {
 
     return (
         <li className={buildCSSClasses("relative border-solid border-2 border-cyan-600 py-2 px-4 mt-4")}>
+            {last && params.get('new') === 'true' && 
+            <div className="absolute -top-4 left-[50%] -translate-x-[50%] bg-lime-300 py-2 px-4"
+                >New!
+            </div>
+            }
             <div className="flex justify-between items-center">
                 <div className="flex flex-col items-start">
                     <p className="uppercase font-bold">{name}</p>
