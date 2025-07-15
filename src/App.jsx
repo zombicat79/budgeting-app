@@ -3,6 +3,9 @@ import { Routes, Route } from 'react-router';
 import { LoaderProvider } from './contexts/LoaderContext';
 
 import IntroPage from './pages/IntroPage';
+import Start from './pages/Start';
+import Logs from './pages/Logs';
+
 import MainLayout from './layout/MainLayout';
 import Dashboard from './layout/Dashboard';
 import BudgetList from './features/budgets/BudgetList';
@@ -28,6 +31,8 @@ function App() {
             <Route path=":budgetId" element={<EntryList />} />
             <Route path=":budgetId/create-entry" element={<NewEntry />} />
           </Route>
+          <Route path="logs" element={<Logs />} />
+          <Route path="start" element={<Start />} />
         </Route>
       </Routes>
     </LoaderProvider>

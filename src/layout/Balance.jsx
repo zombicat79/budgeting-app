@@ -28,7 +28,7 @@ function Balance() {
     }
 
     return (
-        <>
+        <div>
             <h3 
                 className="text-[2.5rem] font-bold"
                 title={budgetId ? `Ongoing balance for ${budgetName} budget` : 'Accumulated general balance for all existing budgets'}
@@ -40,7 +40,7 @@ function Balance() {
                 <h3 className="text-[2rem] font-bold">{available.toFixed(2)} €</h3>
                 <h3 className="text-[1.5rem] text-red-700 font-bold">{expenses.toFixed(2)} €</h3>
             </div>
-        </>
+        </div>
     )
 }
 

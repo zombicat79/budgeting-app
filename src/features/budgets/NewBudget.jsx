@@ -57,7 +57,7 @@ function NewBudget() {
     return (
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <Input type="text" name="name" placeholder="Type in a name for the budget">Id</Input>
-            <Input type="number" step="0.0000001" name="initialBalance" placeholder="Assign an initial balance">Initial balance</Input>
+            <Input type="number" step="0.01" name="initialBalance" placeholder="Assign an initial balance">Initial balance</Input>
             <Input type="date" name="startDate" placeholder="Select start date">Start date</Input>
             <Input last={true} type="date" name="endDate">End date</Input>
 

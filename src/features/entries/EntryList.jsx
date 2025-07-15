@@ -39,7 +39,7 @@ function EntryList() {
                 })}
             </ul>
             <Link to={`/budgets/${budgetId}/create-entry`}>
-                <Button margin={true}>Add new</Button>
+                <Button margin={true}>Add +</Button>
             </Link>
         </>
     );

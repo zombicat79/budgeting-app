@@ -1,10 +1,10 @@
 function validateName(context, name) {
     if (!name) {
-        return { status: false, msg: context === 'Budget' ? `ID field cannot be empty` : `Description field cannot be empty` };
+        return { status: false, msg: context === 'Budget' ? `Name field cannot be empty` : `Description field cannot be empty` };
     }
 
     if (name.length > 20) {
-        return { status: false, msg: context === 'Budget' ? `ID must have less than 20 characters` : `Description must have less than 20 characters` };
+        return { status: false, msg: context === 'Budget' ? `Name must have no more than 20 characters` : `Description must have less than 20 characters` };
     }
     
     return { status: true, msg: 'ok' };
@@ -72,7 +72,8 @@ function validate(context, data) {
         return { validationError: true, validationMsg: nameValidation.msg };
     }
 
-    const amountData = data.initialBalance || data.amount;
+    const amountData = data.initialBalance || data.amount || 0;
+    console.log(amountData)
     const amountValidation = validateAmount(context, amountData);
     if (!amountValidation.status) {
         return { validationError: true, validationMsg: amountValidation.msg };
