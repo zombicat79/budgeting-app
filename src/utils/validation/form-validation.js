@@ -1,10 +1,10 @@
 function validateName(context, name) {
     if (!name) {
-        return { status: false, msg: context === 'Budget' ? `Name field cannot be empty` : `Description field cannot be empty` };
+        return { status: false, msg: context === 'Entry' ? `Description field cannot be empty` : `Name field cannot be empty` };
     }
 
     if (name.length > 20) {
-        return { status: false, msg: context === 'Budget' ? `Name must have no more than 20 characters` : `Description must have less than 20 characters` };
+        return { status: false, msg: context === 'Entry' ? `Description must have less than 20 characters` : `Name must have no more than 20 characters` };
     }
     
     return { status: true, msg: 'ok' };
@@ -50,7 +50,7 @@ function validateDates(start, end) {
     return { status: true, msg: 'ok' };
 }
 
-function validateInputDate(date) {
+function validateSingleDate(date) {
     const presentDate = new Date();
     const inputDate = new Date(date);
 
@@ -58,7 +58,7 @@ function validateInputDate(date) {
         return { status: false, msg: `DATE field cannot be empty` };
     }
 
-    if (inputDate < presentDate && inputDate.getDate() < presentDate.getDate()) {
+    if (inputDate < presentDate) {
         return { status: false, msg: 'DATE cannot be set earlier than the present date.' };
     }
 
@@ -72,8 +72,7 @@ function validate(context, data) {
         return { validationError: true, validationMsg: nameValidation.msg };
     }
 
-    const amountData = data.initialBalance || data.amount || 0;
-    console.log(amountData)
+    const amountData = data.initialBalance || data.amount || data.cashAllowance || 0;
     const amountValidation = validateAmount(context, amountData);
     if (!amountValidation.status) {
         return { validationError: true, validationMsg: amountValidation.msg };
@@ -83,8 +82,7 @@ function validate(context, data) {
     if (context === 'Budget') {
         dateValidation = validateDates(data.startDate, data.endDate);
     } else {
-        console.log(data)
-        dateValidation = validateInputDate(data.inputDate);
+        dateValidation = validateSingleDate(data.inputDate || data.expiryDate);
     }
     if (!dateValidation.status) {
         return { validationError: true, validationMsg: dateValidation.msg };
@@ -93,4 +91,5 @@ function validate(context, data) {
     return { validationError: false, validationMsg: 'ok'};
 }
 
+export { validateSingleDate };
 export default validate;

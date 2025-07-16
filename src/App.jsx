@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router';
 import { LoaderProvider } from './contexts/LoaderContext';
+import { closeProject } from './features/projects/projectReducer';
 
 import IntroPage from './pages/IntroPage';
 import Start from './pages/Start';
@@ -13,12 +15,25 @@ import EntryList from './features/entries/EntryList';
 import NewBudget from './features/budgets/NewBudget';
 import NewEntry from './features/entries/NewEntry';
 
+import { validateSingleDate } from './utils/validation/form-validation';
+
 function App() {
   const [isStarted, setIsStarted] = useState(false);
+  const currentProject = useSelector((store) => store.projects.current);
+  const dispatch = useDispatch();
 
   const handleStart = () => {
     setIsStarted(true);
   };
+
+  useEffect(() => {
+    if (currentProject.id) {
+      const dateValidationResult = validateSingleDate(currentProject.expiryDate);
+      if (!dateValidationResult.status) {
+        dispatch(closeProject());
+      }
+    }
+  }, [currentProject]);
 
   return (
     <LoaderProvider>

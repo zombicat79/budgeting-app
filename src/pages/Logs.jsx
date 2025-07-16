@@ -17,7 +17,7 @@ function Logs() {
     return (
         <ul>
         {logs.map((el) => {
-            return <li>{el}</li>
+            return <li>{el.name}</li>
         })}
         </ul>
     );
