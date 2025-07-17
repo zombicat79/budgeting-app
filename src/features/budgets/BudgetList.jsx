@@ -5,7 +5,10 @@ import BudgetItem from './BudgetItem';
 import Button from './../../ui/Button'
 
 function BudgetList() {
-    const budgetList = useSelector((state) => state.budgets);
+    const currentProject = useSelector((state) => state.projects.current);
+    const allBudgetsObj = useSelector((state) => state.budgets);
+    const budgetList = allBudgetsObj[currentProject.name];
+    console.log(budgetList)
 
     if (!budgetList || budgetList.length === 0) {
         return (

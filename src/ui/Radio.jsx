@@ -14,7 +14,7 @@ function Radio({ children, last, options, ...props }) {
             <div className="flex justify-center gap-8 mt-[1rem]">
             {options.map((el => {
                 return (
-                    <div className="flex items-center gap-2">
+                    <div key={el} className="flex items-center gap-2">
                         <label>{capitaliseFirst(el)}</label>
                         <input value={el} {...props} />
                     </div>

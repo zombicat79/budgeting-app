@@ -13,7 +13,7 @@ function Select({ children, last, categories, ...props }) {
             <label className="text-[2rem] text-cyan-700 uppercase">{children}</label>
             <select className="border border-solid border-transparent outline-none border-b-cyan-700" {...props}>
             {categories.map((el) => {
-                return <option value={el}>{capitaliseFirst(el)}</option>
+                return <option key={el} value={el}>{capitaliseFirst(el)}</option>
             })}
             </select>
         </div>

@@ -1,5 +1,4 @@
 const projectsModel = {
-    id: '',
     name: '',
     cashAllowance: 0,
     expirytDate: null,

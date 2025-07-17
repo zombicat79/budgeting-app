@@ -24,6 +24,7 @@ function NewEntry() {
     const navigate = useNavigate();
     const { budgetId } = useParams();
     const { error, msg, handleError } = useError();
+    const currentProject = useSelector((state) => state.projects.current.name);
     const lastEntryId = useSelector((state) => {
         const relevantEntries = state.entries[budgetId];
         return relevantEntries ? relevantEntries[relevantEntries.length-1].id : 0;
@@ -63,7 +64,8 @@ function NewEntry() {
         }, 2500);
 
         dispatch(addEntry({ parentBudget: budgetId, entry: newEntry }));
-        dispatch(updateBudget({ 
+        dispatch(updateBudget({
+            currentProject, 
             budgetId, 
             entries: 1, 
             income: newEntry.isExpense ? 0 : Number(newEntry.amount), 

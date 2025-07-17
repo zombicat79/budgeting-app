@@ -10,6 +10,9 @@ const projectSlice = createSlice({
         addProject: (state, action) => {
             state.current = action.payload;
         },
+        buildProject: (state, action) => {
+            state.current.attachedBudgets.push(action.payload);
+        },
         closeProject: (state, action) => {
             state.past.push(state.current);
             state.current = {};
@@ -17,5 +20,5 @@ const projectSlice = createSlice({
     }
 })
 
-export const { addProject, closeProject } = projectSlice.actions;
+export const { addProject, buildProject, closeProject } = projectSlice.actions;
 export default projectSlice.reducer;

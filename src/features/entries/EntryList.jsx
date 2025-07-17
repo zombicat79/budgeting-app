@@ -6,8 +6,9 @@ import EntryItem from "./EntryItem";
 
 function EntryList() {
     const { budgetId } = useParams();
+    const currentProject = useSelector((state) => state.projects.current.name);
     const entries = useSelector((state) => state.entries[budgetId]);
-    const relevantBudget = useSelector((state) => state.budgets.find((el) => {
+    const relevantBudget = useSelector((state) => state.budgets[currentProject].find((el) => {
         if (el.id === budgetId) return el;
     }))
 

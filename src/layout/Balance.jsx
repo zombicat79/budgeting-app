@@ -7,8 +7,8 @@ function Balance() {
 
     let budgetName, available, income, expenses;
     if (budgetId) {
-        for (let budget of allBudgets) {
-            if (budget.id === budgetId) {
+        for (let budget in allBudgets) {
+            if (budget === budgetId) {
                 budgetName = budget.name;
                 available = budget.currentBalance;
                 income = budget.income;

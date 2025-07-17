@@ -1,19 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const storage = JSON.parse(sessionStorage.getItem('store'));
-const initialState = storage?.budgets ?? [];
+const initialState = storage?.budgets ?? {};
 
 const budgetSlice = createSlice({
     name: 'budgets',
     initialState,
     reducers: {
         addBudget: (state, action) => {
-            state.push(action.payload);
+            if (!state[action.payload.parentProject]) {
+                state[action.payload.parentProject] = [action.payload.budget];
+            } else  {
+                state[action.payload.parentProject].push(action.payload.budget);
+            }
         },
         updateBudget: (state, action) => {
-            state = state.map((el) => {
-                console.log(el.id)
-                console.log(action.payload.budgetId)
+            state[action.payload.currentProject] = state[action.payload.currentProject].map((el) => {
                 if (el.id === action.payload.budgetId) {
                     return {
                         ...el, 
