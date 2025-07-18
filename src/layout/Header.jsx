@@ -20,7 +20,7 @@ function Header() {
             </section>
             {currentProject.name &&
             <section id="sub-header" className="bg-sky-200 border-b border-sky-600 px-[2rem] py-[0.5rem]">
-                {/* <Balance /> */}
+                <Balance />
             </section>
             }
         </header>

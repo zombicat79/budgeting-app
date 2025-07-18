@@ -24,11 +24,13 @@ function NewEntry() {
     const navigate = useNavigate();
     const { budgetId } = useParams();
     const { error, msg, handleError } = useError();
-    const currentProject = useSelector((state) => state.projects.current.name);
-    const lastEntryId = useSelector((state) => {
-        const relevantEntries = state.entries[budgetId];
-        return relevantEntries ? relevantEntries[relevantEntries.length-1].id : 0;
+    const currentProject = useSelector((state) => state.projects.current);
+    const currentBudget = useSelector((state) => {
+        const allBudgets = state.budgets[currentProject.name];
+        return allBudgets.find((el) => el.id === budgetId);
     });
+    const relevantEntries = useSelector((state) => state.entries[budgetId]);
+    const lastEntryId = relevantEntries ? relevantEntries[relevantEntries.length-1].id : 0;
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -47,7 +49,7 @@ function NewEntry() {
             }
         });
 
-        const validation = validate('Entry', newEntry);
+        const validation = validate('Entry', newEntry, currentProject, currentBudget, newEntry.isExpense);
         if (validation.validationError) {
             handleError(true, validation.validationMsg);
             return;
@@ -65,7 +67,7 @@ function NewEntry() {
 
         dispatch(addEntry({ parentBudget: budgetId, entry: newEntry }));
         dispatch(updateBudget({
-            currentProject, 
+            currentProject: currentProject.name, 
             budgetId, 
             entries: 1, 
             income: newEntry.isExpense ? 0 : Number(newEntry.amount), 
@@ -84,7 +86,7 @@ function NewEntry() {
     return (
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <Input type="text" name="description" placeholder="Type in a description for the entry">Description</Input>
-            <Input type="number" step="0.0000001" name="amount" placeholder="Type in the entry amount">Amount</Input>
+            <Input type="number" step="0.01" name="amount" placeholder="Type in the entry amount">Amount</Input>
             <Input type="date" name="inputDate" title="Select input date">Date</Input>
             <Radio type="radio" name="type" onChange={(e) => handleCategories(e.target.value)} options={['income', 'expense']}>Type</Radio>
             <Select name="category" categories={categoryList} last={true}>Category</Select>

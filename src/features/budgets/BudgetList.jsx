@@ -1,14 +1,18 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
+import MessagePanel from '../../ui/MessagePanel';
 import BudgetItem from './BudgetItem';
 import Button from './../../ui/Button'
 
+import { getUrlParams } from './../../utils/navigation/navigation-management';
+
 function BudgetList() {
+    const params = getUrlParams();
     const currentProject = useSelector((state) => state.projects.current);
     const allBudgetsObj = useSelector((state) => state.budgets);
     const budgetList = allBudgetsObj[currentProject.name];
-    console.log(budgetList)
+    const lastBudget = budgetList[budgetList.length-1];
 
     if (!budgetList || budgetList.length === 0) {
         return (
@@ -20,18 +24,26 @@ function BudgetList() {
                 </Link>
             </div>
         )
-    }
-
+    }   
+    
     return (
-        <ul>
-        {budgetList.map((budget, index) => {
-            let last = false;
-            if (index === budgetList.length-1) {
-                last = true;
+        <>
+            {params.get('new') === 'true' && 
+            <MessagePanel messages={[
+                { body: 'New budget added with ID: ', data: lastBudget.id }
+            ]} />
             }
-            return <BudgetItem key={budget.id} budgetData={budget} last={last} />
-        })}
-        </ul>
+            
+            <ul>
+            {budgetList.map((budget, index) => {
+                let last = false;
+                if (index === budgetList.length-1) {
+                    last = true;
+                }
+                return <BudgetItem key={budget.id} budgetData={budget} last={last} />
+            })}
+            </ul>
+        </>
     );
 }
 

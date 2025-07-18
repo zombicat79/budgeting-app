@@ -10,7 +10,7 @@ function validateName(context, name) {
     return { status: true, msg: 'ok' };
 }
 
-function validateAmount(context, amount) {
+function validateAmount(context, amount, currentProject, currentBudget, isExpense) {
     if (amount === 0) {
         if (context === 'Budget') {
             return { status: false, msg: `INITIAL BALANCE cannot be empty and must be greater than ${amount}` };
@@ -21,6 +21,14 @@ function validateAmount(context, amount) {
 
     if (amount < 0) {
         return { status: false, msg: `${context} amount does not accept negative numbers` };
+    }
+
+    if (currentBudget && amount > currentBudget.currentBalance && isExpense ) {
+        return { status: false, msg: `EXPENSES cannot be higher than the current budget's AVAILABLE BALANCE` };
+    }
+
+    if (currentProject && amount > currentProject.availableAllowance) {
+        return { status: false, msg: `Budget's INITIAL BALANCE cannot be higher than the current project's NON-ALLOCATED amount` };
     }
     
     return { status: true, msg: 'ok' };
@@ -40,11 +48,11 @@ function validateDates(start, end) {
     }
 
     if (startDate < presentDate && startDate.getDate() < presentDate.getDate()) {
-        return { status: false, msg: 'START DATE cannot be set earlier than the present date.' };
+        return { status: false, msg: 'START DATE cannot be set earlier than the present date' };
     }
 
     if (startDate > endDate) {
-        return { status: false, msg: 'END DATE cannot be set earlier than the start date.' };
+        return { status: false, msg: 'END DATE cannot be set earlier than the start date' };
     }
 
     return { status: true, msg: 'ok' };
@@ -59,13 +67,13 @@ function validateSingleDate(date) {
     }
 
     if (inputDate < presentDate) {
-        return { status: false, msg: 'DATE cannot be set earlier than the present date.' };
+        return { status: false, msg: 'DATE cannot be set earlier than the present date' };
     }
 
     return { status: true, msg: 'ok' };
 }
 
-function validate(context, data) {
+function validate(context, data, currentProject = null, currentBudget = null, isExpense = null) {
     const descriptiveData = data.name || data.description;
     const nameValidation = validateName(context, descriptiveData);
     if (!nameValidation.status) {
@@ -73,7 +81,7 @@ function validate(context, data) {
     }
 
     const amountData = data.initialBalance || data.amount || data.cashAllowance || 0;
-    const amountValidation = validateAmount(context, amountData);
+    const amountValidation = validateAmount(context, amountData, currentProject, currentBudget, isExpense);
     if (!amountValidation.status) {
         return { validationError: true, validationMsg: amountValidation.msg };
     }

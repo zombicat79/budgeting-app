@@ -27,6 +27,7 @@ function NewProject() {
             switch(key) {
                 case 'cashAllowance':
                     newProject[key] = Number(value).toFixed(2) * 1;
+                    newProject['availableAllowance'] = Number(value).toFixed(2) * 1;
                     break;
                 default:
                     newProject[key] = value;

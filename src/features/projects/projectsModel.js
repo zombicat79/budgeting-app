@@ -1,6 +1,8 @@
 const projectsModel = {
     name: '',
     cashAllowance: 0,
+    allocatedAllowance: 0,
+    availableAllowance: 0,
     expirytDate: null,
     expired: false,
     attachedBudgets: []
