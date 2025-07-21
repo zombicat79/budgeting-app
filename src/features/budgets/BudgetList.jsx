@@ -43,6 +43,9 @@ function BudgetList() {
                 return <BudgetItem key={budget.id} budgetData={budget} last={last} />
             })}
             </ul>
+            <Link to={`/budgets/create`}>
+                <Button margin={true}>Add +</Button>
+            </Link>
         </>
     );
 }
