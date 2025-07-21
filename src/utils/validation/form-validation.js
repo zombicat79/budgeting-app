@@ -47,8 +47,14 @@ function validateDates(start, end) {
         return { status: false, msg: `END DATE field cannot be empty` };
     }
 
-    if (startDate < presentDate && startDate.getDate() < presentDate.getDate()) {
-        return { status: false, msg: 'START DATE cannot be set earlier than the present date' };
+    if (startDate < presentDate) {
+        const dayEquality = startDate.getDate() === presentDate.getDate();
+        const monthEquality = startDate.getMonth() === presentDate.getMonth();
+        const yearEquality = startDate.getFullYear() === presentDate.getFullYear();
+
+        if (!(dayEquality && monthEquality && yearEquality)) {
+            return { status: false, msg: 'START DATE cannot be set earlier than the present date' };
+        }
     }
 
     if (startDate > endDate) {
@@ -58,7 +64,7 @@ function validateDates(start, end) {
     return { status: true, msg: 'ok' };
 }
 
-function validateSingleDate(date) {
+function validateSingleDate(context, date) {
     const presentDate = new Date();
     const inputDate = new Date(date);
 
@@ -66,8 +72,14 @@ function validateSingleDate(date) {
         return { status: false, msg: `DATE field cannot be empty` };
     }
 
-    if (inputDate < presentDate) {
-        return { status: false, msg: 'DATE cannot be set earlier than the present date' };
+    if (context !== 'Entry' && inputDate < presentDate) {
+        const dayEquality = inputDate.getDate() === presentDate.getDate();
+        const monthEquality = inputDate.getMonth() === presentDate.getMonth();
+        const yearEquality = inputDate.getFullYear() === presentDate.getFullYear();
+
+        if (!(dayEquality && monthEquality && yearEquality)) {
+            return { status: false, msg: 'DATE cannot be set earlier than the present date' };
+        }
     }
 
     return { status: true, msg: 'ok' };
@@ -90,7 +102,7 @@ function validate(context, data, currentProject = null, currentBudget = null, is
     if (context === 'Budget') {
         dateValidation = validateDates(data.startDate, data.endDate);
     } else {
-        dateValidation = validateSingleDate(data.inputDate || data.expiryDate);
+        dateValidation = validateSingleDate(context, data.inputDate || data.expiryDate);
     }
     if (!dateValidation.status) {
         return { validationError: true, validationMsg: dateValidation.msg };

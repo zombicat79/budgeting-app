@@ -12,7 +12,7 @@ function BudgetList() {
     const currentProject = useSelector((state) => state.projects.current);
     const allBudgetsObj = useSelector((state) => state.budgets);
     const budgetList = allBudgetsObj[currentProject.name];
-    const lastBudget = budgetList[budgetList.length-1];
+    const lastBudget = budgetList ? budgetList[budgetList.length-1] : null;
 
     if (!budgetList || budgetList.length === 0) {
         return (
@@ -24,7 +24,7 @@ function BudgetList() {
                 </Link>
             </div>
         )
-    }   
+    }
     
     return (
         <>

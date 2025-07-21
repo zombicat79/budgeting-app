@@ -12,6 +12,9 @@ function EntryList() {
     const params = getUrlParams();
     const currentProject = useSelector((state) => state.projects.current.name);
     const entries = useSelector((state) => state.entries[budgetId]);
+    const sortedEntries = [...entries].sort((a, b) => {
+        return new Date(a.inputDate) - new Date(b.inputDate);
+    });
     let lastEntry = null;
     if (entries) {
         lastEntry = entries[entries.length-1];
@@ -45,9 +48,9 @@ function EntryList() {
                     <span className="font-bold">Initial budget allowance as of {relevantBudget.startDate}: </span>
                     <span>{relevantBudget.initialBalance}€</span>
                 </li>
-                {entries.map((entry, index) => {
+                {sortedEntries.map((entry) => {
                     let last = false;
-                    if (index === entries.length-1) {
+                    if (entry.id === entries[entries.length-1].id) {
                         last = true;
                     }
                     return <EntryItem key={entry.id} entryData={entry} last={last} />;

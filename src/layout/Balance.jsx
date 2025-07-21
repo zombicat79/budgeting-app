@@ -18,25 +18,29 @@ function Balance() {
             }
         }
 
-        /* available = relevantBudgets.reduce((sum, curr) => {
-            return sum + curr.currentBalance;
-        }, 0);
-        income = relevantBudgets.reduce((sum, curr) => {
-            return sum + curr.income;
-        }, 0);
-        expenses = relevantBudgets.reduce((sum, curr) => {
-            return sum + curr.expenses;
-        }, 0); */
-
         return (
             <div>
-                <h3 className="text-[2.5rem] font-bold">
+                <h3 className="text-[2rem] md:text-[2.5rem] font-bold">
                     <span title='Current budget accounting status'>{`${budgetName.toUpperCase()} budget entries`}</span>
                 </h3>
-                <div className="flex justify-between items-center">
-                    <h3 className="text-[1.5rem] text-emerald-800 font-bold">{income.toFixed(2)} €</h3>
-                    <h3 className="text-[2rem] font-bold">{available.toFixed(2)} / {initial.toFixed(2)} €</h3>
-                    <h3 className="text-[1.5rem] text-red-700 font-bold">{expenses.toFixed(2)} €</h3>
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                    <h3 
+                        className="order-1 md:order-0 text-[1.5rem] text-emerald-800 font-bold md:flex-[1] md:text-left">
+                        <span title="Income attained during current budget">{`Income: ${income.toFixed(2)} €`}</span>
+                    </h3>
+                    <h3 
+                        className="order-0 md:order-1 border-b-2 border-t-2 px-4 md:border-none md:p-0 text-[1.5rem] 
+                            font-bold md:flex-[1] lg:text-[2rem]">
+                        <span
+                            className="before:content-['*'] after:content-['*'] before:mr-2 after:ml-2 md:before:hidden md:after:hidden"
+                            title="Budget internal accounting state">
+                                {`${available.toFixed(2)} € available out of ${initial.toFixed(2)} €`}
+                        </span>
+                    </h3>
+                    <h3 
+                        className="order-2 text-[1.5rem] text-red-700 font-bold md:flex-[1] md:text-right">
+                        <span title="Expenses incurred during current budget">{`Expenses: ${expenses.toFixed(2)} €`}</span>
+                    </h3>
                 </div>
             </div>
         );
