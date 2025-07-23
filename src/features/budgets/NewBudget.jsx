@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { addBudget } from "./budgetReducer";
-import { buildProject, updateProject } from '../projects/projectReducer';
+import { growProject, updateProject } from '../projects/projectReducer';
 import useError from './../../hooks/useError';
 
 import Input from "../../ui/Input";
@@ -66,8 +66,8 @@ function NewBudget() {
         }, 2500);
 
         dispatch(addBudget({ parentProject: currentProject.name, budget: newBudget }));
-        dispatch(buildProject({ name: newBudget.name, id: newBudget.id }));
-        dispatch(updateProject(newBudget.initialBalance));
+        dispatch(growProject({ name: newBudget.name, id: newBudget.id }));
+        dispatch(updateProject({ updateType: 'addition', amount: newBudget.initialBalance }));
     }
 
     return (

@@ -30,8 +30,14 @@ const budgetSlice = createSlice({
             });
             return state
         },
+        deleteBudget: (state, action) => {
+            const newState = state[action.payload.currentProjectName].filter((budget) => {
+                return budget.id !== action.payload.budgetId;
+            });
+            state[action.payload.currentProjectName] = newState;
+        }
     }
 })
 
-export const { addBudget, updateBudget } = budgetSlice.actions;
+export const { addBudget, updateBudget, deleteBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

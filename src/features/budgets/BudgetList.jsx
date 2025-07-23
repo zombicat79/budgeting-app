@@ -40,7 +40,7 @@ function BudgetList() {
                 if (index === budgetList.length-1) {
                     last = true;
                 }
-                return <BudgetItem key={budget.id} budgetData={budget} last={last} />
+                return <BudgetItem key={budget.id} budgetData={budget} currentProjectName={currentProject.name} last={last} />
             })}
             </ul>
             <Link to={`/budgets/create`}>

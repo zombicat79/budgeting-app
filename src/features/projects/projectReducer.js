@@ -10,12 +10,23 @@ const projectSlice = createSlice({
         addProject: (state, action) => {
             state.current = action.payload;
         },
-        buildProject: (state, action) => {
+        updateProject: (state, action) => {
+            if (action.payload.updateType === 'addition') {
+                state.current.allocatedAllowance += action.payload.amount;
+                state.current.availableAllowance -= action.payload.amount;
+            } else {
+                state.current.allocatedAllowance -= action.payload.amount;
+                state.current.availableAllowance += action.payload.amount;
+            }
+        },
+        growProject: (state, action) => {
             state.current.attachedBudgets.push(action.payload);
         },
-        updateProject: (state, action) => {
-            state.current.allocatedAllowance += action.payload;
-            state.current.availableAllowance -= action.payload;
+        curtailProject: (state, action) => {
+            const updatedAttachedBudgets = state.current.attachedBudgets.filter((budget) => {
+                return budget.id !== action.payload;
+            });
+            state.current.attachedBudgets = updatedAttachedBudgets;
         },
         closeProject: (state, action) => {
             state.past.push(state.current);
@@ -24,5 +35,5 @@ const projectSlice = createSlice({
     }
 })
 
-export const { addProject, buildProject, updateProject, closeProject } = projectSlice.actions;
+export const { addProject, updateProject, growProject, curtailProject, closeProject } = projectSlice.actions;
 export default projectSlice.reducer;
