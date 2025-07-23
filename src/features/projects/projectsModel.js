@@ -3,7 +3,7 @@ const projectsModel = {
     cashAllowance: 0,
     allocatedAllowance: 0,
     availableAllowance: 0,
-    expirytDate: null,
+    expiryDate: null,
     expired: false,
     attachedBudgets: []
 }

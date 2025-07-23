@@ -29,6 +29,10 @@ function NewProject() {
                     newProject[key] = Number(value).toFixed(2) * 1;
                     newProject['availableAllowance'] = Number(value).toFixed(2) * 1;
                     break;
+                case 'expiryDate':
+                    const localizedDate = value.split('-').reverse().join('-');
+                    newProject[key] = localizedDate;
+                    break;
                 default:
                     newProject[key] = value;
             }

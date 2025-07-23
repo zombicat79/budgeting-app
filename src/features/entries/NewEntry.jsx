@@ -41,6 +41,10 @@ function NewEntry() {
                 case 'amount':
                     newEntry[key] = Number(value).toFixed(2) * 1;
                     break;
+                case 'inputDate':
+                    const localizedDate = value.split('-').reverse().join('-');
+                    newEntry[key] = localizedDate;
+                    break;
                 case 'type':
                     value === 'expense' ? newEntry.isExpense = true : newEntry.isExpense = false;
                     break;

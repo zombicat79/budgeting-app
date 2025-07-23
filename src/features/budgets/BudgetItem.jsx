@@ -31,14 +31,18 @@ function BudgetItem({ budgetData, last }) {
                 >New!
             </div>
             }
-            <div className="flex justify-between items-center">
-                <div className="flex flex-col items-start">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-[1rem]">
+                <div className="flex flex-col items-start self-start">
                     <p className="uppercase font-bold">{name}</p>
                     <p>from {startDate} to {endDate}</p> 
                 </div>
-                <Link to={`/budgets/${id}`}>
-                    <Button>See</Button>
-                </Link>
+                <div className="flex justify-between items-center gap-[1rem]">
+                    <Link to={`/budgets/${id}`}>
+                        <Button>See</Button>
+                    </Link>
+                    <Button type="alert">Update</Button>
+                    <Button type="danger">Delete</Button>
+                </div>
             </div>
         </li>
     );

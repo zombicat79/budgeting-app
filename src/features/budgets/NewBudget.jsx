@@ -28,9 +28,17 @@ function NewBudget() {
         const newBudget = {...budgetModel, id: currentProject.name + '-' + uuidv4()};
         formData.forEach((value, key) => {
             switch(key) {
+                case 'name':
+                    newBudget[key] = value.toLowerCase();
+                    break;
                 case 'initialBalance':
                     newBudget[key] = Number(value).toFixed(2) * 1;
                     newBudget['currentBalance'] = Number(value).toFixed(2) * 1;
+                    break;
+                case 'startDate':
+                case 'endDate':
+                    const localizedDate = value.split('-').reverse().join('-');
+                    newBudget[key] = localizedDate;
                     break;
                 default:
                     newBudget[key] = value;
@@ -58,7 +66,7 @@ function NewBudget() {
         }, 2500);
 
         dispatch(addBudget({ parentProject: currentProject.name, budget: newBudget }));
-        dispatch(buildProject(newBudget.id));
+        dispatch(buildProject({ name: newBudget.name, id: newBudget.id }));
         dispatch(updateProject(newBudget.initialBalance));
     }
 
