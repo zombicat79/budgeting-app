@@ -1,19 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const storage = JSON.parse(sessionStorage.getItem('store'));
-const initialState = storage?.budgets ?? [];
+const initialState = storage?.budgets ?? {};
 
 const budgetSlice = createSlice({
     name: 'budgets',
     initialState,
     reducers: {
         addBudget: (state, action) => {
-            state.push(action.payload);
+            if (!state[action.payload.parentProject]) {
+                state[action.payload.parentProject] = [action.payload.budget];
+            } else  {
+                state[action.payload.parentProject].push(action.payload.budget);
+            }
         },
         updateBudget: (state, action) => {
-            state = state.map((el) => {
-                console.log(el.id)
-                console.log(action.payload.budgetId)
+            state[action.payload.currentProject] = state[action.payload.currentProject].map((el) => {
                 if (el.id === action.payload.budgetId) {
                     return {
                         ...el, 
@@ -28,8 +30,14 @@ const budgetSlice = createSlice({
             });
             return state
         },
+        deleteBudget: (state, action) => {
+            const newState = state[action.payload.currentProjectName].filter((budget) => {
+                return budget.id !== action.payload.budgetId;
+            });
+            state[action.payload.currentProjectName] = newState;
+        }
     }
 })
 
-export const { addBudget, updateBudget } = budgetSlice.actions;
+export const { addBudget, updateBudget, deleteBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

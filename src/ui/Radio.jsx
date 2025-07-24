@@ -1,6 +1,16 @@
+import { useRef, useEffect } from 'react';
+
 import { capitaliseFirst } from "../utils/conversion/string-management";
 
 function Radio({ children, last, options, ...props }) {
+    const inputRef = useRef();
+    
+    useEffect(() => {
+        if (inputRef.current.value === 'expense') {
+            inputRef.current.checked = true;
+        }
+    }, [])
+
     let wrapperStyles = "flex flex-col w-full sm:max-w-md";
     if (last) {
         wrapperStyles += " mb-[5rem]"; 
@@ -11,16 +21,16 @@ function Radio({ children, last, options, ...props }) {
     return (
         <div className={wrapperStyles}>
             <label className="text-[2rem] text-cyan-700 uppercase">{children}</label>
-            <div className="flex justify-center gap-8 mt-[1rem]">
+            <fieldset id={props.name} className="flex justify-center gap-8 mt-[1rem]">
             {options.map((el => {
                 return (
-                    <div className="flex items-center gap-2">
-                        <label>{capitaliseFirst(el)}</label>
-                        <input value={el} {...props} />
-                    </div>
+                    <label key={el} className="flex items-center gap-2">
+                        <span>{capitaliseFirst(el)}</span>
+                        <input ref={inputRef} value={el} {...props} />
+                    </label>
                 )
             }))}
-            </div>
+            </fieldset>
         </div>
     )
 }

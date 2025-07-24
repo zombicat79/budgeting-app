@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { addProject } from './projectReducer';
-import { v4 as uuidv4 } from 'uuid';
 import { LoaderContext } from '../../contexts/LoaderContext';
 import useError from './../../hooks/useError';
 
@@ -23,11 +22,16 @@ function NewProject() {
     function handleSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const newProject = { ...projectsModel, id: uuidv4() };
+        const newProject = { ...projectsModel };
         formData.forEach((value, key) => {
             switch(key) {
                 case 'cashAllowance':
                     newProject[key] = Number(value).toFixed(2) * 1;
+                    newProject['availableAllowance'] = Number(value).toFixed(2) * 1;
+                    break;
+                case 'expiryDate':
+                    const localizedDate = value.split('-').reverse().join('-');
+                    newProject[key] = localizedDate;
                     break;
                 default:
                     newProject[key] = value;

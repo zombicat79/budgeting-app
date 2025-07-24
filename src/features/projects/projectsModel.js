@@ -1,8 +1,9 @@
 const projectsModel = {
-    id: '',
     name: '',
     cashAllowance: 0,
-    expirytDate: null,
+    allocatedAllowance: 0,
+    availableAllowance: 0,
+    expiryDate: null,
     expired: false,
     attachedBudgets: []
 }

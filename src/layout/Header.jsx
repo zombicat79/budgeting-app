@@ -18,7 +18,7 @@ function Header() {
                     <p className="tracking-widest">Guest user</p>
                 </div>
             </section>
-            {currentProject.id &&
+            {currentProject.name &&
             <section id="sub-header" className="bg-sky-200 border-b border-sky-600 px-[2rem] py-[0.5rem]">
                 <Balance />
             </section>
