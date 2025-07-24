@@ -1,16 +1,19 @@
-import { useCallback } from "react";
+import { useContext, useCallback } from "react";
+import { DialogContext } from "../../contexts/DialogContext";
 import { useDispatch } from "react-redux";
 import { deleteBudget } from "./budgetReducer";
 import { curtailProject, updateProject } from "../projects/projectReducer";
 import { Link } from 'react-router';
 
 import Button from './../../ui/Button'
+import DialogBox from "../../ui/DialogBox";
 
 import { getUrlParams } from './../../utils/navigation/navigation-management';
 
 function BudgetItem({ budgetData, currentProjectName, last }) {
     const params = getUrlParams();
     const dispatch = useDispatch();
+    const { setDialogShown, setDialogContent } = useContext(DialogContext);
     const { id, name, startDate, endDate, expired, outOfBounds, initialBalance } = budgetData;
 
     const buildCSSClasses = useCallback((baseClass) => {
@@ -24,11 +27,17 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
         return classes;
     }, [expired, outOfBounds]);
 
-    function handleDelete() {
+    function confirmDeletion() {
         console.log('delete request!')
-        dispatch(updateProject({ updateType: 'subtraction', amount: initialBalance }));
+        setDialogContent(DialogBox({
+            title: 'Polla', 
+            msg: 'Very much pollas', 
+            actions: [{ id: 1, text: 'OK'}]
+        }));
+        setDialogShown((prev) => !prev);
+        /* dispatch(updateProject({ updateType: 'subtraction', amount: initialBalance }));
         dispatch(curtailProject(id));
-        dispatch(deleteBudget({ currentProjectName, budgetId: id }));
+        dispatch(deleteBudget({ currentProjectName, budgetId: id })); */
     }
 
     return (
@@ -48,7 +57,7 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
                         <Button>See</Button>
                     </Link>
                     <Button type="alert">Update</Button>
-                    <div onClick={handleDelete}>
+                    <div onClick={confirmDeletion}>
                         <Button type="danger">Delete</Button>
                     </div>
                 </div>

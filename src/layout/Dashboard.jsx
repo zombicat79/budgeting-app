@@ -28,7 +28,7 @@ function Dashboard() {
     }
 
     return (
-        <>
+        <section>
             <div className="grid grid-cols-1 gap-y-[1rem]">
                 <Link to='/budgets' className="w-fit m-auto">
                     <MenuOption>See all budgets</MenuOption>
@@ -54,7 +54,7 @@ function Dashboard() {
                     <MenuOption>Delete an entry</MenuOption>
                 </Link>
             </div>
-        </>
+        </section>
     );
 }
 

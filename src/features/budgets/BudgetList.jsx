@@ -27,7 +27,7 @@ function BudgetList() {
     }
     
     return (
-        <>
+        <section>
             {params.get('new') === 'true' && 
             <MessagePanel messages={[
                 { body: 'New budget added with ID: ', data: lastBudget.id }
@@ -46,7 +46,7 @@ function BudgetList() {
             <Link to={`/budgets/create`}>
                 <Button margin={true}>Add +</Button>
             </Link>
-        </>
+        </section>
     );
 }
 
