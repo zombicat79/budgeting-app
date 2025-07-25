@@ -46,18 +46,33 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
                 >New!
             </div>
             }
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-[1rem]">
+            <div className="flex flex-row max-[360px]:flex-col justify-between items-center gap-[1rem]">
                 <div className="flex flex-col items-start self-start">
                     <p className="uppercase font-bold">{name}</p>
                     <p>from {startDate} to {endDate}</p> 
                 </div>
-                <div className="flex justify-between items-center gap-[1rem]">
-                    <Link to={`/budgets/${id}`}>
-                        <Button>See</Button>
-                    </Link>
-                    <Button type="alert">Update</Button>
-                    <div onClick={confirmDeletion}>
+                <div className="flex justify-between items-center max-[360px]:self-start gap-[1rem]">
+                    <div className="hidden sm:block">
+                        <Link to={`/budgets/${id}`}>
+                            <Button>See</Button>
+                        </Link>
+                    </div>
+                    <div className="sm:hidden">
+                        <Link to={`/budgets/${id}`}>
+                            <img className="w-[2rem] h-[2rem]" src="/icons/eye_icon.png" alt="see" />
+                        </Link>
+                    </div>
+                    <div className="hidden sm:block">
+                        <Button type="alert">Update</Button>
+                    </div>
+                    <div className="sm:hidden">
+                        <img className="w-[2rem] h-[2rem]" src="/icons/edit_icon.png" alt="edit" />
+                    </div>
+                    <div className="hidden sm:block" onClick={confirmDeletion}>
                         <Button type="danger">Delete</Button>
+                    </div>
+                    <div className="sm:hidden" onClick={confirmDeletion}>
+                        <img className="w-[1.5rem] h-[1.5rem]" src="/icons/cross_icon.png" alt="close" />
                     </div>
                 </div>
             </div>
