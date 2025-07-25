@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router';
 import { LoaderProvider } from './contexts/LoaderContext';
+import { DialogProvider } from './contexts/DialogContext';
 import { closeProject } from './features/projects/projectReducer';
 
 import IntroPage from './pages/IntroPage';
@@ -37,19 +38,21 @@ function App() {
 
   return (
     <LoaderProvider>
-      <Routes>
-        <Route path="/" element={isStarted ? <MainLayout /> : <IntroPage onStart={handleStart} />} >
-          <Route index element={<Dashboard />} />
-          <Route path="budgets" >
-            <Route index element={<BudgetList />} />
-            <Route path="create" element={<NewBudget />} />
-            <Route path=":budgetId" element={<EntryList />} />
-            <Route path=":budgetId/create-entry" element={<NewEntry />} />
+      <DialogProvider>
+        <Routes>
+          <Route path="/" element={isStarted ? <MainLayout /> : <IntroPage onStart={handleStart} />} >
+            <Route index element={<Dashboard />} />
+            <Route path="budgets" >
+              <Route index element={<BudgetList />} />
+              <Route path="create" element={<NewBudget />} />
+              <Route path=":budgetId" element={<EntryList />} />
+              <Route path=":budgetId/create-entry" element={<NewEntry />} />
+            </Route>
+            <Route path="logs" element={<Logs />} />
+            <Route path="start" element={<Start />} />
           </Route>
-          <Route path="logs" element={<Logs />} />
-          <Route path="start" element={<Start />} />
-        </Route>
-      </Routes>
+        </Routes>
+      </DialogProvider>
     </LoaderProvider>
   )
 }
