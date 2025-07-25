@@ -1,8 +1,6 @@
 import { useContext, useCallback } from "react";
 import { DialogContext } from "../../contexts/DialogContext";
 import { useDispatch } from "react-redux";
-import { deleteBudget } from "./budgetReducer";
-import { curtailProject, updateProject } from "../projects/projectReducer";
 import { Link } from 'react-router';
 
 import Button from './../../ui/Button'
@@ -28,16 +26,17 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
     }, [expired, outOfBounds]);
 
     function confirmDeletion() {
-        console.log('delete request!')
         setDialogContent(DialogBox({
-            title: 'Polla', 
-            msg: 'Very much pollas', 
-            actions: [{ id: 1, text: 'OK'}]
+            title: 'Warning', 
+            msg: [
+                { msgId: 1, body: `You are about to delete ${name.toUpperCase()} budget and all its associated entries.` },
+                { msgId: 2, body: 'Are you sure you want to proceed?' }
+            ],
+            actions: [{ actionId: 1, type: 'regular', text: 'Cancel' }, { actionId: 2, type: 'danger', text: 'Confirm' }],
+            tools: { setDialogShown, dispatch },
+            metadata: { id, currentProjectName, initialBalance }
         }));
         setDialogShown((prev) => !prev);
-        /* dispatch(updateProject({ updateType: 'subtraction', amount: initialBalance }));
-        dispatch(curtailProject(id));
-        dispatch(deleteBudget({ currentProjectName, budgetId: id })); */
     }
 
     return (
