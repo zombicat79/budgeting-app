@@ -13,9 +13,15 @@ const entrySlice = createSlice({
             } else  {
                 state[action.payload.parentBudget].push(action.payload.entry);
             }
+        },
+        deleteEntry: (state, action) => {
+            const newEntryList = state[action.payload.parentBudget].filter((el) => {
+                return el.id !== action.payload.destroyId;
+            })
+            state[action.payload.parentBudget] = newEntryList;
         }
     }
 })
 
-export const { addEntry } = entrySlice.actions;
+export const { addEntry, deleteEntry } = entrySlice.actions;
 export default entrySlice.reducer;

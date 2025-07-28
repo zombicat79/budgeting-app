@@ -25,7 +25,7 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
         return classes;
     }, [expired, outOfBounds]);
 
-    function confirmDeletion() {
+    function confirmDeletion(itemCategory) {
         setDialogContent(DialogBox({
             title: 'Warning', 
             msg: [
@@ -34,7 +34,7 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
             ],
             actions: [{ actionId: 1, type: 'regular', text: 'Cancel' }, { actionId: 2, type: 'danger', text: 'Confirm' }],
             tools: { setDialogShown, dispatch },
-            metadata: { id, currentProjectName, initialBalance }
+            metadata: { itemCategory, id, currentProjectName, initialBalance }
         }));
         setDialogShown((prev) => !prev);
     }
@@ -68,10 +68,10 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
                     <div className="sm:hidden">
                         <img className="w-[2rem] h-[2rem]" src="/icons/edit_icon.png" alt="edit" />
                     </div>
-                    <div className="hidden sm:block" onClick={confirmDeletion}>
+                    <div className="hidden sm:block" onClick={() => confirmDeletion('budget')}>
                         <Button type="danger">Delete</Button>
                     </div>
-                    <div className="sm:hidden" onClick={confirmDeletion}>
+                    <div className="sm:hidden" onClick={() => confirmDeletion('budget')}>
                         <img className="w-[1.5rem] h-[1.5rem]" src="/icons/cross_icon.png" alt="close" />
                     </div>
                 </div>

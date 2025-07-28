@@ -17,12 +17,22 @@ const budgetSlice = createSlice({
         updateBudget: (state, action) => {
             state[action.payload.currentProject] = state[action.payload.currentProject].map((el) => {
                 if (el.id === action.payload.budgetId) {
-                    return {
-                        ...el, 
-                        entries: el.entries + action.payload.entries, 
-                        income: el.income + action.payload.income,
-                        expenses: el.expenses + action.payload.expenses,
-                        currentBalance: el.currentBalance + action.payload.income - action.payload.expenses
+                    if (action.payload.updateType === 'addition') {
+                        return {
+                            ...el, 
+                            entries: el.entries + 1, 
+                            income: el.income + action.payload.income,
+                            expenses: el.expenses + action.payload.expenses,
+                            currentBalance: el.currentBalance + action.payload.income - action.payload.expenses
+                        }
+                    } else  {
+                        return {
+                            ...el, 
+                            entries: el.entries - 1, 
+                            income: action.payload.isExpense ? el.income : el.income - action.payload.amount,
+                            expenses: action.payload.isExpense ? el.expenses - action.payload.amount : el.expenses,
+                            currentBalance: action.payload.isExpense ? el.currentBalance + action.payload.amount : el.currentBalance - action.payload.amount
+                        }
                     }
                 }
 

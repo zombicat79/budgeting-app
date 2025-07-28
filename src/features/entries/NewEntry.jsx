@@ -30,7 +30,7 @@ function NewEntry() {
         return allBudgets.find((el) => el.id === budgetId);
     });
     const relevantEntries = useSelector((state) => state.entries[budgetId]);
-    const lastEntryId = relevantEntries ? relevantEntries[relevantEntries.length-1].id : 0;
+    const lastEntryId = !relevantEntries || relevantEntries.length === 0 ? 0 : relevantEntries[relevantEntries.length-1].id;
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -71,9 +71,9 @@ function NewEntry() {
 
         dispatch(addEntry({ parentBudget: budgetId, entry: newEntry }));
         dispatch(updateBudget({
+            updateType: 'addition',
             currentProject: currentProject.name, 
             budgetId, 
-            entries: 1, 
             income: newEntry.isExpense ? 0 : Number(newEntry.amount), 
             expenses: newEntry.isExpense ? Number(newEntry.amount) : 0 
         }));
