@@ -1,5 +1,6 @@
 const entriesModel = {
     id: '',
+    name: '',
     description: '',
     amount: 0,
     inputDate: null,

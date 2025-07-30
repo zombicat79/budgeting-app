@@ -89,11 +89,12 @@ function NewEntry() {
 
     return (
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-            <Input type="text" name="description" placeholder="Type in a description for the entry">Description</Input>
-            <Input type="number" step="0.01" name="amount" placeholder="Type in the entry amount">Amount</Input>
-            <Input type="date" name="inputDate" title="Select input date">Date</Input>
-            <Radio type="radio" name="type" onChange={(e) => handleCategories(e.target.value)} options={['income', 'expense']}>Type</Radio>
-            <Select name="category" categories={categoryList} last={true}>Category</Select>
+            <Input id="name" type="text" name="name" placeholder="Type in a short name for the entry">Name</Input>
+            <Input id="description" type="textarea" name="description" placeholder="Type in a detailed description for the entry (optional)">Description</Input>
+            <Input id="amount" type="number" step="0.01" name="amount" placeholder="Type in the entry amount">Amount</Input>
+            <Input id="date" type="date" name="inputDate" title="Select input date">Date</Input>
+            <Radio id="entry-type" type="radio" name="type" onChange={(e) => handleCategories(e.target.value)} options={['income', 'expense']}>Type</Radio>
+            <Select id="entry-category" name="category" categories={categoryList} last={true}>Category</Select>
 
             {error && <ErrorPanel content={msg} onClosePanel={handleError} />}
 
