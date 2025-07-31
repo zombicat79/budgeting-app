@@ -26,7 +26,7 @@ function EntryList() {
 
     if (!entries || entries.length === 0) {
         return (
-            <div className="relative top-50">
+            <div className="">
                 <p>No entries found</p>
                 <p className="mb-[1rem]">Please add a new entry</p>
                 <Link to={`/budgets/${budgetId}/create-entry`}>

@@ -4,4 +4,8 @@ function capitaliseFirst(string) {
     return firstChar.toUpperCase() + rest;
 }
 
-export { capitaliseFirst };
+function reverseDateFormat(date) {
+    return date.split('-').reverse().join('-');
+}
+
+export { capitaliseFirst, reverseDateFormat };

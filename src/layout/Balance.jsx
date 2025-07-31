@@ -65,11 +65,6 @@ function Balance() {
                         <span title="Total amount of money to be tracked">{cashAllowance.toFixed(2)} € </span>
                         <span title="Date of current project's end">up to {expiryDate}</span>
                     </h3>
-                    {/* <h3 
-                        className="hidden md:block text-[2rem] font-bold md:flex-[1]">
-                        <span title="Total amount of money to be tracked">{cashAllowance.toFixed(2)} €</span>
-                        <span title="Date of current project's end"> up to {expiryDate}</span>
-                    </h3> */}
                     <h3 
                         className="order-2 text-[1.5rem] text-red-700 font-bold md:flex-[1] md:text-right">
                         <span title="Money already allocated to 1 or more budgets">{`Allocated: ${allocatedAllowance.toFixed(2)} €`}</span>

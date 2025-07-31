@@ -9,7 +9,7 @@ import { getUrlParams } from "../../utils/navigation/navigation-management";
 
 function EntryItem({ entryData, currentProjectName, parentBudget, last }) {
     const params = getUrlParams();
-    const [updating, setUpdating] = useState(true);
+    const [updating, setUpdating] = useState(false);
     const { id, name, description, inputDate, amount, isExpense, category } = entryData;
     const { setDialogContent, setDialogShown } = useContext(DialogContext);
     const dispatch =  useDispatch();
@@ -61,10 +61,10 @@ function EntryItem({ entryData, currentProjectName, parentBudget, last }) {
                     <p>{isExpense ? -amount : amount}€</p>
                 </div>
                 <div className="flex justify-between items-center max-[360px]:self-start gap-[1rem]">
-                    <div className="hover:cursor-pointer">
+                    <div className="hover:cursor-pointer" title="Modify this entry" onClick={() => setUpdating(true)}>
                         <img className="w-[2rem] h-[2rem]" src="/icons/edit_icon.png" alt="edit" />
                     </div>
-                    <div className="hover:cursor-pointer" onClick={() => confirmDeletion('entry')}>
+                    <div className="hover:cursor-pointer" title="Delete this entry" onClick={() => confirmDeletion('entry')}>
                         <img className="w-[1.5rem] h-[1.5rem]" src="/icons/cross_icon.png" alt="close" />
                     </div>
                 </div>
