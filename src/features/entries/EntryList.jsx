@@ -43,6 +43,11 @@ function EntryList() {
                 { body: 'New entry added with ID: ', data: lastEntry.id }
             ]} />
             }
+            {params.get('updated') === 'true' && 
+            <MessagePanel messages={[
+                { body: `Entry with ID ${params.get('entryID')} was just updated`, data: "" }
+            ]} />
+            }
             
             <ul className="md:max-w-7xl mx-auto mb-[1rem] w-full">
                 <li className="border-gray-500 bg-gray-300 border-solid border-2 py-2 px-4 mt-4">

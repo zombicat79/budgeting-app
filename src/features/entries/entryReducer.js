@@ -14,6 +14,16 @@ const entrySlice = createSlice({
                 state[action.payload.parentBudget].push(action.payload.entry);
             }
         },
+        modifyEntry: (state, action) => {
+            const modifiedEntryList = state[action.payload.parentBudget].map((el) => {
+                if (el.id === action.payload.modifyId ) {
+                    return el = action.payload.modifiedEntry;
+                } else {
+                    return el;
+                }
+            })
+            state[action.payload.parentBudget] = modifiedEntryList;
+        },
         deleteEntry: (state, action) => {
             const newEntryList = state[action.payload.parentBudget].filter((el) => {
                 return el.id !== action.payload.destroyId;
@@ -23,5 +33,5 @@ const entrySlice = createSlice({
     }
 })
 
-export const { addEntry, deleteEntry } = entrySlice.actions;
+export const { addEntry, modifyEntry, deleteEntry } = entrySlice.actions;
 export default entrySlice.reducer;

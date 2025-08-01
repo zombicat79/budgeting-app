@@ -25,13 +25,31 @@ const budgetSlice = createSlice({
                             expenses: el.expenses + action.payload.expenses,
                             currentBalance: el.currentBalance + action.payload.income - action.payload.expenses
                         }
-                    } else  {
+                    } else if (action.payload.updateType === 'subtraction')  {
                         return {
                             ...el, 
                             entries: el.entries - 1, 
                             income: action.payload.isExpense ? el.income : el.income - action.payload.amount,
                             expenses: action.payload.isExpense ? el.expenses - action.payload.amount : el.expenses,
                             currentBalance: action.payload.isExpense ? el.currentBalance + action.payload.amount : el.currentBalance - action.payload.amount
+                        }
+                    } else {
+                        let newIncome = el.income;
+                        let newExpenses = el.expenses;
+                        let newBalance = el.currentBalance;
+                        if (action.payload.isExpense) {
+                            newBalance = el.currentBalance + action.payload.oldAmount - action.payload.newAmount;
+                            newExpenses = (el.expenses - action.payload.oldAmount) + action.payload.newAmount;
+                        } else {
+                            newBalance = (el.currentBalance - action.payload.oldAmount) + action.payload.newAmount;
+                            newIncome = (el.income - action.payload.oldAmount) + action.payload.newAmount;
+                        }
+
+                        return {
+                            ...el, 
+                            income: newIncome,
+                            expenses: newExpenses,
+                            currentBalance: newBalance
                         }
                     }
                 }

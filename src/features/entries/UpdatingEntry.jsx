@@ -1,20 +1,34 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
+import { LoaderContext } from '../../contexts/LoaderContext';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { modifyEntry } from './entryReducer';
+import { updateBudget } from '../budgets/budgetReducer';
+import useAllegiance from '../../hooks/useAllegiance';
+import useError from '../../hooks/useError';
 
 import Button from './../../ui/Button';
 
 import { incomeCategories, expenditureCategories } from './../../data/categories';
+import validate from './../../utils/validation/form-validation';
 import { capitaliseFirst, reverseDateFormat } from './../../utils/conversion/string-management';
+import { goTop } from '../../utils/layout/scroll-management';
 
 function UpdatingEntry({ entryData, tools }) {
+    const { setIsLoading } = useContext(LoaderContext);
+    const { currentProject, currentBudget } = useAllegiance();
     const { id, name, description, inputDate, amount, isExpense, category } = entryData;
+    const { error, msg, handleError } = useError();
     const firstInput = useRef(null)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         firstInput.current.focus();
     }, [])
 
     function handleSubmit(event) {
-        /* event.preventDefault();
+        event.preventDefault();
         const formData = new FormData(event.target);
         const currentEntry = { ...entryData };
         formData.forEach((value, key) => {
@@ -43,18 +57,20 @@ function UpdatingEntry({ entryData, tools }) {
         }, 500);
         goTop();
         setTimeout(() => {
+            tools.setUpdating(false);
             setIsLoading((curr) => !curr);
-            navigate(`/budgets/${budgetId}?updated=true`);
+            navigate(`/budgets/${currentBudget.id}?updated=true&entryID=${id}`);
         }, 2500);
 
-        dispatch(addEntry({ parentBudget: budgetId, entry: currentEntry }));
+        dispatch(modifyEntry({ parentBudget: currentBudget.id, modifyId: id, modifiedEntry: currentEntry }))
         dispatch(updateBudget({
-            updateType: 'addition',
+            updateType: 'modification',
             currentProject: currentProject.name, 
-            budgetId, 
-            income: currentEntry.isExpense ? 0 : Number(currentEntry.amount), 
-            expenses: currentEntry.isExpense ? Number(currentEntry.amount) : 0 
-        })); */
+            budgetId: currentBudget.id, 
+            isExpense,
+            oldAmount: amount, 
+            newAmount: Number(currentEntry.amount) 
+        }));
     }
 
     return (
@@ -86,6 +102,8 @@ function UpdatingEntry({ entryData, tools }) {
                     </div>
                 </div>
             </form>
+
+            {error && <p className="mt-4 mb-2 text-red-900 font-bold">{msg} !!!</p>}
         </li>
     );
 }

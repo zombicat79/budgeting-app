@@ -49,6 +49,11 @@ function EntryItem({ entryData, currentProjectName, parentBudget, last }) {
                 >New!
             </div>
             }
+            {params.get('updated') === 'true' && params.get('entryID') === id.toString() &&
+            <div className="absolute -top-4 left-[50%] -translate-x-[50%] bg-orange-300 py-2 px-4"
+                >Updated!
+            </div>
+            }
             <div className="flex max-[360px]:flex-col max-[360px]:gap-[.5rem] justify-between items-center">
                 <div className="flex flex-col items-start max-[360px]:self-start">
                     <div className="flex items-start flex-wrap">
