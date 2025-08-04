@@ -1,18 +1,20 @@
-import { useContext, useCallback } from "react";
+import { useState, useContext, useCallback } from "react";
 import { DialogContext } from "../../contexts/DialogContext";
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router';
 
 import Button from './../../ui/Button'
 import DialogBox from "../../ui/DialogBox";
+import UpdatingBudget from "./UpdatingBudget";
 
 import { getUrlParams } from './../../utils/navigation/navigation-management';
 
 function BudgetItem({ budgetData, currentProjectName, last }) {
+    const [updating, setUpdating] = useState(false);
     const params = getUrlParams();
     const dispatch = useDispatch();
     const { setDialogShown, setDialogContent } = useContext(DialogContext);
-    const { id, name, startDate, endDate, expired, outOfBounds, initialBalance } = budgetData;
+    const { id, name, entries, startDate, endDate, expired, outOfBounds, initialBalance } = budgetData;
 
     const buildCSSClasses = useCallback((baseClass) => {
         let classes = baseClass;
@@ -39,6 +41,10 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
         setDialogShown((prev) => !prev);
     }
 
+    if (updating) {
+        return <UpdatingBudget budgetData={budgetData} tools={{ buildCSSClasses, setUpdating }} />
+    }
+
     return (
         <li className={buildCSSClasses("relative border-solid border-2 border-cyan-600 py-2 px-4 mt-4")}>
             {last && params.get('new') === 'true' && 
@@ -47,9 +53,14 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
             </div>
             }
             <div className="flex flex-row max-[360px]:flex-col justify-between items-center gap-[1rem]">
-                <div className="flex flex-col items-start self-start">
+                <div className="flex flex-1 flex-col items-start self-start">
                     <p className="uppercase font-bold">{name}</p>
-                    <p>from {startDate} to {endDate}</p> 
+                    <p className="text-left">
+                        <span className="font-semibold">tracks {initialBalance}€ | </span>
+                        <span>from {startDate} to {endDate}</span>
+                        <span> | </span>
+                        <span className="font-semibold">{entries === 1 ? 'holding 1 entry' : `holding ${entries} entries`}</span>
+                    </p> 
                 </div>
                 <div className="flex justify-between items-center max-[360px]:self-start gap-[1rem]">
                     <div className="hidden sm:block">
@@ -62,10 +73,10 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
                             <img className="w-[2rem] h-[2rem]" src="/icons/eye_icon.png" alt="see" />
                         </Link>
                     </div>
-                    <div className="hidden sm:block">
+                    <div className="hidden sm:block" onClick={() => setUpdating(true)}>
                         <Button type="alert">Update</Button>
                     </div>
-                    <div className="sm:hidden">
+                    <div className="sm:hidden" onClick={() => setUpdating(true)}>
                         <img className="w-[2rem] h-[2rem]" src="/icons/edit_icon.png" alt="edit" />
                     </div>
                     <div className="hidden sm:block" onClick={() => confirmDeletion('budget')}>

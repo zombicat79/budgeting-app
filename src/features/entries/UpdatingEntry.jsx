@@ -75,12 +75,12 @@ function UpdatingEntry({ entryData, tools }) {
 
     return (
         <li className={tools.buildCSSClasses('relative border-solid border-2 py-2 px-4 mt-4 w-[70%] sm:w-[50%] max-w-2xl animate-pulse')}>
-            <form className="flex max-[360px]:flex-col gap-4 max-[360px]:gap-[.5rem] justify-between items-center" onSubmit={handleSubmit}>
-                <div className="flex flex-col flex-3 items-start max-[360px]:self-start gap-2">
+            <form className="flex flex-col sm:flex-row gap-4 max-[360px]:gap-[1rem] justify-between items-center" onSubmit={handleSubmit}>
+                <div className="flex flex-col flex-3 items-start w-full max-[360px]:self-start gap-2">
                     <div className="flex items-start flex-wrap w-full">
-                        <div className="flex w-full gap-[1rem] mb-[.5rem]">
+                        <div className="flex flex-wrap w-full gap-[1rem] mb-[.5rem]">
                             <span className="uppercase font-bold text-left">{id}. </span>
-                            <input ref={firstInput} className="border px-1 flex-1" type="text" name="name" defaultValue={name} />
+                            <input ref={firstInput} className="border px-1 flex-1 max-[360px]:w-full" type="text" name="name" defaultValue={name} />
                         </div>
                         <select className="border px-1 w-full" name="category">
                             {isExpense
@@ -93,7 +93,7 @@ function UpdatingEntry({ entryData, tools }) {
                     <input className="border px-1 w-full" type="date" name="inputDate" defaultValue={reverseDateFormat(inputDate)} />
                     <input className="border px-1 w-full" type="number" name="amount" defaultValue={amount} />
                 </div>
-                <div className="flex-1 flex flex-col gap-[1rem]">
+                <div className="flex-1 flex flex-row max-[360px]:flex-col sm:flex-col gap-[1rem]">
                     <div onClick={() => tools.setUpdating(false)}>
                         <Button type="danger" width={'full'}>Cancel</Button>
                     </div>
