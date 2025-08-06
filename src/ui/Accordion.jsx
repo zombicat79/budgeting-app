@@ -15,7 +15,7 @@ function Accordion({ title, children }) {
     }
 
     return (
-        <article className="md:max-w-7xl m-auto">
+        <article className="w-full md:max-w-7xl m-auto">
             <header className={headerClasses}>
                 <h3>{title.toUpperCase()}</h3>
                 <p className="absolute top-[50%] -translate-y-[55%] right-6 text-[3rem] hover:cursor-pointer" onClick={toggleAccordion}>+</p>

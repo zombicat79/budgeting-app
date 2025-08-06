@@ -1,13 +1,13 @@
-function validateName(context, name, currentProject) {
+function validateName(context, action, name, currentProject) {
     if (!name) {
-        return { status: false, msg: context === 'Entry' ? `Description field cannot be empty` : `Name field cannot be empty` };
+        return { status: false, msg: 'Name field cannot be empty' };
     }
 
     if (name.length > 20) {
-        return { status: false, msg: context === 'Entry' ? `Description must have less than 20 characters` : `Name must have no more than 20 characters` };
+        return { status: false, msg: 'Name must have no more than 20 characters' };
     }
 
-    if (context === 'Budget') {
+    if (context === 'Budget' && action === 'create') {
         let budgetScanResult = false;
         currentProject.attachedBudgets.forEach((budget) => {
             if (budget.name === name) {
@@ -18,6 +18,14 @@ function validateName(context, name, currentProject) {
         if (budgetScanResult) return { status: false, msg: `There is already a budget with the chosen name existing in the current project. Please choose a DIFFERENT NAME` };
     }
     
+    return { status: true, msg: 'ok' };
+}
+
+function validateDescription(description) {
+    if (description.length > 250) {
+        return { status: false, msg: 'Description must have no more than 250 characters' };
+    }
+
     return { status: true, msg: 'ok' };
 }
 
@@ -106,11 +114,17 @@ function validateSingleDate(context, date) {
     return { status: true, msg: 'ok' };
 }
 
-function validate(context, data, currentProject = null, currentBudget = null, isExpense = null) {
-    const descriptiveData = data.name || data.description;
-    const nameValidation = validateName(context, descriptiveData, currentProject);
+function validate(context, action, data, currentProject = null, currentBudget = null, isExpense = null) {
+    const nameValidation = validateName(context, action, data.name, currentProject);
     if (!nameValidation.status) {
         return { validationError: true, validationMsg: nameValidation.msg };
+    }
+
+    if (context === 'Entry') {
+        const descriptionValidation = validateDescription(data.description);
+        if (!descriptionValidation.status) {
+            return { validationError: true, validationMsg: descriptionValidation.msg };
+        }
     }
 
     const amountData = data.initialBalance || data.amount || data.cashAllowance || 0;

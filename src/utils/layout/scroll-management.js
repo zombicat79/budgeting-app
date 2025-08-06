@@ -1,5 +1,4 @@
 function scrollBlock(element) {
-    console.log(element)
     document.querySelector(element).style.overflow = "hidden";
 }
 

@@ -1,7 +1,7 @@
-function Button({ children, type, margin, minWidth }) {
+function Button({ children, type, margin, width }) {
     let classes = "py-[1rem] px-[2rem] rounded-xl bg-teal-600 text-white hover:bg-teal-400 hover:cursor-pointer";
     if (margin) classes += ' my-[5rem]';
-    if (minWidth) classes += ' min-w-[12rem]';
+    if (width) classes += ` w-${width}`;
     if (type) {
         switch(type) {
             case 'alert':

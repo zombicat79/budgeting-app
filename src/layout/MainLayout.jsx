@@ -18,7 +18,7 @@ function MainLayout() {
             {dialogShown && <Dialog>{dialogContent}</Dialog>}
             <Header />
             {location.pathname !== "/" && <GoBack />}
-            <main className="titillium-web-regular h-screen px-[3rem] py-[10rem]">
+            <main className="titillium-web-regular min-h-[70vh] px-[3rem] py-[10rem] flex flex-col justify-center">
                 <Outlet />
             </main>
             <Footer />

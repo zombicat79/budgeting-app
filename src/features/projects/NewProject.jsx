@@ -38,7 +38,7 @@ function NewProject() {
             }
         });
 
-        const validation = validate('Project', newProject);
+        const validation = validate('Project', 'create', newProject);
         if (validation.validationError) {
             handleError(true, validation.validationMsg);
             return;
