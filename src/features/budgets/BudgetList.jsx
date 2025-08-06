@@ -33,6 +33,11 @@ function BudgetList() {
                 { body: 'New budget added with ID: ', data: lastBudget.id }
             ]} />
             }
+            {params.get('updated') === 'true' && 
+            <MessagePanel messages={[
+                { body: `Entry with ID ${params.get('budgetID')} was just updated`, data: "" }
+            ]} />
+            }
             
             <ul>
             {budgetList.map((budget, index) => {

@@ -1,24 +1,37 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
+import { LoaderContext } from '../../contexts/LoaderContext';
 import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
+import { modifyBudget } from './budgetReducer';
+import { updateProject } from '../projects/projectReducer';
+import { useNavigate } from 'react-router';
 import useError from './../../hooks/useError';
 
 import Button from '../../ui/Button';
 
 import validate from './../../utils/validation/form-validation';
 import { reverseDateFormat } from '../../utils/conversion/string-management';
+import { goTop } from '../../utils/layout/scroll-management';
 
 function UpdatingBudget({ budgetData, tools }) {
-    const { name, initialBalance, startDate, endDate, entries, id } = budgetData;
+    const { name, initialBalance, income, expenses, startDate, endDate, entries, id } = budgetData;
     const firstInput = useRef(null);
     const currentProject = useSelector(store => store.projects.current);
+    const allBudgets = useSelector(store => store.budgets);
     const { error, msg, handleError } = useError();
+    const { setIsLoading } = useContext(LoaderContext);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         firstInput.current.focus();
     }, [])
 
-    function handleSubmit(event) {
+    useEffect(() => {
+        dispatch(updateProject({ updateType: 'modification', currentProject, allBudgets }));
+    }, [allBudgets])
+
+    async function handleSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const currentBudget = {...budgetData};
@@ -40,7 +53,7 @@ function UpdatingBudget({ budgetData, tools }) {
             }
         });
 
-        const validation = validate('Budget', currentBudget, currentProject);
+        const validation = validate('Budget', 'update', currentBudget, currentProject);
         if (validation.validationError) {
             handleError(true, validation.validationMsg);
             return;
@@ -50,19 +63,22 @@ function UpdatingBudget({ budgetData, tools }) {
             return;
         }
 
-        /* handleError(false);
+        handleError(false);
         setTimeout(() => {
             setIsLoading((curr) => !curr);
         }, 500);
         goTop();
         setTimeout(() => {
+            tools.setUpdating(false);
             setIsLoading((curr) => !curr);
-            navigate('/budgets?new=true')
-        }, 2500);
+            navigate(`/budgets?updated=true&budgetID=${id}`);
+        }, 2500)
 
-        dispatch(addBudget({ parentProject: currentProject.name, budget: currentBudget }));
-        dispatch(growProject({ name: currentBudget.name, id: currentBudget.id }));
-        dispatch(updateProject({ updateType: 'addition', amount: currentBudget.initialBalance })); */
+        dispatch(modifyBudget({ 
+            parentProject: currentProject.name, 
+            budget: currentBudget, 
+            priorBalance: budgetData.expenses - budgetData.income 
+        }))
     }
 
     return (

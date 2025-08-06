@@ -1,4 +1,4 @@
-function validateName(context, name, currentProject) {
+function validateName(context, action, name, currentProject) {
     if (!name) {
         return { status: false, msg: 'Name field cannot be empty' };
     }
@@ -7,7 +7,7 @@ function validateName(context, name, currentProject) {
         return { status: false, msg: 'Name must have no more than 20 characters' };
     }
 
-    if (context === 'Budget') {
+    if (context === 'Budget' && action === 'create') {
         let budgetScanResult = false;
         currentProject.attachedBudgets.forEach((budget) => {
             if (budget.name === name) {
@@ -114,8 +114,8 @@ function validateSingleDate(context, date) {
     return { status: true, msg: 'ok' };
 }
 
-function validate(context, data, currentProject = null, currentBudget = null, isExpense = null) {
-    const nameValidation = validateName(context, data.name, currentProject);
+function validate(context, action, data, currentProject = null, currentBudget = null, isExpense = null) {
+    const nameValidation = validateName(context, action, data.name, currentProject);
     if (!nameValidation.status) {
         return { validationError: true, validationMsg: nameValidation.msg };
     }

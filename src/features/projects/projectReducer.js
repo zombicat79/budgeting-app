@@ -14,6 +14,12 @@ const projectSlice = createSlice({
             if (action.payload.updateType === 'addition') {
                 state.current.allocatedAllowance += action.payload.amount;
                 state.current.availableAllowance -= action.payload.amount;
+            } else if (action.payload.updateType === 'modification') {
+                const totalAllocation = action.payload.allBudgets[action.payload.currentProject.name].reduce((acc, el) => {
+                    return acc + el.initialBalance;
+                }, 0);
+                state.current.allocatedAllowance = totalAllocation;
+                state.current.availableAllowance = state.current.cashAllowance - totalAllocation;
             } else {
                 state.current.allocatedAllowance -= action.payload.amount;
                 state.current.availableAllowance += action.payload.amount;

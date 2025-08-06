@@ -14,6 +14,22 @@ const budgetSlice = createSlice({
                 state[action.payload.parentProject].push(action.payload.budget);
             }
         },
+        modifyBudget: (state, action) => {
+            state[action.payload.parentProject] = state[action.payload.parentProject].map((el) => {
+                if (el.id === action.payload.budget.id) {
+                    return { 
+                        ...el, 
+                        name: action.payload.budget.name,
+                        initialBalance: action.payload.budget.initialBalance,
+                        currentBalance: action.payload.budget.initialBalance - action.payload.priorBalance,
+                        startDate: action.payload.budget.startDate,
+                        endDate: action.payload.budget.endDate,
+                     }
+                } else {
+                    return el;
+                }
+            });
+        },
         updateBudget: (state, action) => {
             state[action.payload.currentProject] = state[action.payload.currentProject].map((el) => {
                 if (el.id === action.payload.budgetId) {
@@ -67,5 +83,5 @@ const budgetSlice = createSlice({
     }
 })
 
-export const { addBudget, updateBudget, deleteBudget } = budgetSlice.actions;
+export const { addBudget, modifyBudget, updateBudget, deleteBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

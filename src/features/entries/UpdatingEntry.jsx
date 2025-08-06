@@ -45,7 +45,7 @@ function UpdatingEntry({ entryData, tools }) {
             }
         });
 
-        const validation = validate('Entry', currentEntry, currentProject, currentBudget, currentEntry.isExpense);
+        const validation = validate('Entry', 'update', currentEntry, currentProject, currentBudget, currentEntry.isExpense);
         if (validation.validationError) {
             handleError(true, validation.validationMsg);
             return;

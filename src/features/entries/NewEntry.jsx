@@ -53,7 +53,7 @@ function NewEntry() {
             }
         });
 
-        const validation = validate('Entry', newEntry, currentProject, currentBudget, newEntry.isExpense);
+        const validation = validate('Entry', 'create', newEntry, currentProject, currentBudget, newEntry.isExpense);
         if (validation.validationError) {
             handleError(true, validation.validationMsg);
             return;

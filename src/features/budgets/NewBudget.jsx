@@ -45,7 +45,7 @@ function NewBudget() {
             }
         });
 
-        const validation = validate('Budget', newBudget, currentProject);
+        const validation = validate('Budget', 'create', newBudget, currentProject);
         if (validation.validationError) {
             handleError(true, validation.validationMsg);
             return;
