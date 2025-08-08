@@ -25,6 +25,9 @@ function NewProject() {
         const newProject = { ...projectsModel };
         formData.forEach((value, key) => {
             switch(key) {
+                case 'name':
+                    newProject[key] = value.toLowerCase();
+                    break;
                 case 'cashAllowance':
                     newProject[key] = Number(value).toFixed(2) * 1;
                     newProject['availableAllowance'] = Number(value).toFixed(2) * 1;

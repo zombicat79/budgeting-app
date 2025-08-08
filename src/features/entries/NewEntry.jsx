@@ -38,6 +38,9 @@ function NewEntry() {
         const newEntry = { ...entriesModel, id: lastEntryId+1 };
         formData.forEach((value, key) => {
             switch(key) {
+                case 'name':
+                    newEntry[key] = value.toLowerCase();
+                    break;
                 case 'amount':
                     newEntry[key] = Number(value).toFixed(2) * 1;
                     break;

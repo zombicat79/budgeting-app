@@ -17,6 +17,21 @@ function validateName(context, action, name, currentProject) {
 
         if (budgetScanResult) return { status: false, msg: `There is already a budget with the chosen name existing in the current project. Please choose a DIFFERENT NAME` };
     }
+
+    if (context === 'Project' && action === 'create') {
+        const store = JSON.parse(sessionStorage.getItem('store'));
+        
+        if (store) {
+            let projectScanResult = false;
+            store.projects.past.forEach((project) => {
+                if (project.name === name) {
+                    projectScanResult = true;
+                }
+            })
+
+            if (projectScanResult) return { status: false, msg: `There is already a project with the chosen name listed in your project logs. Please choose a DIFFERENT NAME` };
+        }
+    }
     
     return { status: true, msg: 'ok' };
 }

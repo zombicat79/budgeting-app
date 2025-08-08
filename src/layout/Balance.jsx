@@ -50,7 +50,7 @@ function Balance() {
         return (
             <div>
                 <h3 
-                    className="text-[2.5rem] font-bold">
+                    className="uppercase text-[2.5rem] font-bold">
                     <span title='Current money tracking project'>{name}</span>
                 </h3>
                 <div className="flex flex-col md:flex-row justify-between items-center">
