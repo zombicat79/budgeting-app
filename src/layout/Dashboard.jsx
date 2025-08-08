@@ -1,11 +1,33 @@
+import { useContext } from 'react';
+import { DialogContext } from '../contexts/DialogContext';
+import { LoaderContext } from '../contexts/LoaderContext';
 import { Link } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '../ui/Button';
 import MenuOption from '../ui/MenuOption';
+import DialogBox from '../ui/DialogBox';
 
 function Dashboard() {
     const currentProject = useSelector((store) => store.projects.current);
+    const { name } = currentProject;
+    const { setDialogShown, setDialogContent } = useContext(DialogContext);
+    const { setIsLoading } = useContext(LoaderContext);
+    const dispatch = useDispatch();
+
+    function confirmTermination(itemCategory) {
+        setDialogContent(DialogBox({
+            title: 'Warning', 
+            msg: [
+                { msgId: 1, body: `You are about to terminate ${name.toUpperCase()} project and all its associated records. All records will still be kept in the logs section.` },
+                { msgId: 2, body: 'Are you sure you want to proceed?' }
+            ],
+            actions: [{ actionId: 1, type: 'regular', text: 'Cancel' }, { actionId: 2, type: 'danger', text: 'Confirm' }],
+            tools: { setDialogShown, setIsLoading, dispatch },
+            metadata: { itemCategory }
+        }));
+        setDialogShown((prev) => !prev);
+    }
 
     if (!currentProject.name) {
         return (
@@ -36,6 +58,11 @@ function Dashboard() {
                 <Link to="/budgets/create" className="w-fit m-auto">
                     <MenuOption>Create new budget</MenuOption>
                 </Link>
+            </div>
+            <div className="grid grid-cols-1 gap-y-[1rem] mt-[8rem]">
+                <div className="w-fit m-auto" onClick={() => confirmTermination('project')}>
+                    <MenuOption type="danger">Terminate project</MenuOption>
+                </div>
             </div>
         </section>
     );

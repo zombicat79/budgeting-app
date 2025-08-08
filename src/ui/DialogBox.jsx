@@ -1,3 +1,4 @@
+import { closeProject } from "./../features/projects/projectReducer";
 import { updateBudget, deleteBudget } from "./../features/budgets/budgetReducer";
 import { curtailProject, updateProject } from "./../features/projects/projectReducer";
 import { deleteEntry } from "../features/entries/entryReducer";
@@ -13,6 +14,14 @@ function DialogBox({ title, msg, actions, tools, metadata }) {
     }
     
     function handleDelete(category) {
+        if (category === 'project') {
+            tools.setDialogShown((prev) => !prev);
+            tools.setIsLoading(true);
+            setTimeout(() => {
+                tools.setIsLoading(false);
+            }, 3000);
+            tools.dispatch(closeProject());
+        }
         if (category === 'budget') {
             tools.setDialogShown((prev) => !prev);
             tools.dispatch(updateProject({ updateType: 'subtraction', amount: metadata.initialBalance }));
@@ -35,7 +44,7 @@ function DialogBox({ title, msg, actions, tools, metadata }) {
     return (
         <>
             <h3 className="text-[3rem]">{title}</h3>
-            <div className="my-[2rem]">
+            <div className="flex flex-col gap-4 my-[2rem]">
             {msg.map((el) => {
                 return <p key={el.msgId}>{el.body}</p>
             })}
