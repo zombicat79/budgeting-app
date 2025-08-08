@@ -25,6 +25,9 @@ const projectSlice = createSlice({
                 state.current.availableAllowance += action.payload.amount;
             }
         },
+        updateLog: (state, action) => {
+            state.current.logs.push(action.payload);
+        },
         growProject: (state, action) => {
             state.current.attachedBudgets.push(action.payload);
         },
@@ -41,5 +44,5 @@ const projectSlice = createSlice({
     }
 })
 
-export const { addProject, updateProject, growProject, curtailProject, closeProject } = projectSlice.actions;
+export const { addProject, updateProject, updateLog, growProject, curtailProject, closeProject } = projectSlice.actions;
 export default projectSlice.reducer;

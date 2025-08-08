@@ -5,7 +5,16 @@ const projectsModel = {
     availableAllowance: 0,
     expiryDate: null,
     expired: false,
-    attachedBudgets: []
+    attachedBudgets: [],
+    logs: []
 }
 
-export default projectsModel;
+const logsModel = {
+    id: 0,
+    timestamp: null,
+    actionType: '',
+    assetType: '',
+    assetData: {}
+}
+
+export { projectsModel, logsModel };

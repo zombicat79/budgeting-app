@@ -1,21 +1,23 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { addProject } from './projectReducer';
+import { addProject, updateLog } from './projectReducer';
 import { LoaderContext } from '../../contexts/LoaderContext';
 import useError from './../../hooks/useError';
+import useLog from '../../hooks/useLog';
 
 import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 import ErrorPanel from '../../ui/ErrorPanel';
 
-import projectsModel from './projectsModel';
+import { projectsModel } from './projectsModel';
 import validate from './../../utils/validation/form-validation';
 import { goTop } from './../../utils/layout/scroll-management';
 
 function NewProject() {
     const { setIsLoading } = useContext(LoaderContext);
     const { error, msg, handleError } = useError();
+    const newLogEntry = useLog('created', 'project');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -55,6 +57,8 @@ function NewProject() {
         }, 2500);
 
         dispatch(addProject(newProject));
+        newLogEntry.assetData = newProject;
+        dispatch(updateLog(newLogEntry));
     }
 
     return (
