@@ -26,7 +26,15 @@ const projectSlice = createSlice({
             }
         },
         updateLog: (state, action) => {
-            state.current.logs.push(action.payload);
+            if (action.payload.assetData.logs?.length > 0) {
+                state.past.forEach((el) => {
+                    if (el.name === action.payload.assetData.name) {
+                        el.logs.push(action.payload)
+                    }
+                });
+            } else {
+                state.current.logs.push(action.payload);
+            }
         },
         growProject: (state, action) => {
             state.current.attachedBudgets.push(action.payload);

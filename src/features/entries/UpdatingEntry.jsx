@@ -3,9 +3,11 @@ import { LoaderContext } from '../../contexts/LoaderContext';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { modifyEntry } from './entryReducer';
+import { updateLog } from '../projects/projectReducer';
 import { updateBudget } from '../budgets/budgetReducer';
 import useAllegiance from '../../hooks/useAllegiance';
 import useError from '../../hooks/useError';
+import useLog from '../../hooks/useLog';
 
 import Button from './../../ui/Button';
 
@@ -19,6 +21,7 @@ function UpdatingEntry({ entryData, tools }) {
     const { currentProject, currentBudget } = useAllegiance();
     const { id, name, description, inputDate, amount, isExpense, category } = entryData;
     const { error, msg, handleError } = useError();
+    const newLogEntry = useLog('updated', 'entry');
     const firstInput = useRef(null)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -71,6 +74,8 @@ function UpdatingEntry({ entryData, tools }) {
             oldAmount: amount, 
             newAmount: Number(currentEntry.amount) 
         }));
+        newLogEntry.assetData = currentEntry;
+        dispatch(updateLog(newLogEntry));
     }
 
     return (

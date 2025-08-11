@@ -1,13 +1,12 @@
 import { closeProject } from "./../features/projects/projectReducer";
 import { updateBudget, deleteBudget } from "./../features/budgets/budgetReducer";
-import { curtailProject, updateProject } from "./../features/projects/projectReducer";
+import { curtailProject, updateProject, updateLog } from "./../features/projects/projectReducer";
 import { deleteEntry } from "../features/entries/entryReducer";
-
 
 import Button from "./Button"
 
 function DialogBox({ title, msg, actions, tools, metadata }) {
-    const { itemCategory } = metadata;
+    const { itemCategory, removalPayload } = metadata;
 
     function handleDismiss() {
         tools.setDialogShown((prev) => !prev);
@@ -39,6 +38,7 @@ function DialogBox({ title, msg, actions, tools, metadata }) {
             }));
             tools.dispatch(deleteEntry({ parentBudget: metadata.parentBudget, destroyId: metadata.id }));
         }
+        tools.dispatch(updateLog(removalPayload));
     }
 
     return (
