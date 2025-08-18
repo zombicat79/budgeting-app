@@ -15,6 +15,7 @@ import BudgetList from './features/budgets/BudgetList';
 import EntryList from './features/entries/EntryList';
 import NewBudget from './features/budgets/NewBudget';
 import NewEntry from './features/entries/NewEntry';
+import LogDetail from './features/logs/LogDetail';
 
 import { validateSingleDate } from './utils/validation/form-validation';
 
@@ -48,7 +49,10 @@ function App() {
               <Route path=":budgetId" element={<EntryList />} />
               <Route path=":budgetId/create-entry" element={<NewEntry />} />
             </Route>
-            <Route path="logs" element={<Logs />} />
+            <Route path="logs">
+              <Route index element={<Logs />} />
+              <Route path=":projectName" element={<LogDetail />} />
+            </Route>
             <Route path="start" element={<Start />} />
           </Route>
         </Routes>
