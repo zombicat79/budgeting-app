@@ -7,6 +7,7 @@ import piglet from '/logos/piglet_logo.png';
 
 function Header() {
     const currentProject = useSelector((store) => store.projects.current);
+    const url = window.location.href;
 
     return (
         <header className="sticky top-0 right-0 z-10 left-0 titillium-web-regular">
@@ -24,7 +25,7 @@ function Header() {
                     <p className="tracking-widest">Guest user</p>
                 </div>
             </section>
-            {currentProject.name &&
+            {currentProject.name && !url.includes("logs") &&
             <section id="sub-header" className="bg-sky-200 border-b border-sky-600 px-[2rem] py-[0.5rem]">
                 <Balance />
             </section>
