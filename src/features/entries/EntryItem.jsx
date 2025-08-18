@@ -1,6 +1,7 @@
 import { useState, useContext, useCallback } from "react";
 import { DialogContext } from "../../contexts/DialogContext";
 import { useDispatch } from "react-redux";
+import useLog from "./../../hooks/useLog";
 
 import DialogBox from "../../ui/DialogBox";
 import UpdatingEntry from "./UpdatingEntry";
@@ -13,6 +14,9 @@ function EntryItem({ entryData, currentProjectName, parentBudget, last }) {
     const { id, name, description, inputDate, amount, isExpense, category } = entryData;
     const { setDialogContent, setDialogShown } = useContext(DialogContext);
     const dispatch =  useDispatch();
+    // Log entry deletion enabling
+    const newLogEntry = useLog('deleted', 'entry')
+    newLogEntry.assetData = entryData;
 
     const buildCSSClasses = useCallback((baseClass) => {
         let classes = baseClass;
@@ -33,7 +37,7 @@ function EntryItem({ entryData, currentProjectName, parentBudget, last }) {
             ],
             actions: [{ actionId: 1, type: 'regular', text: 'Cancel' }, { actionId: 2, type: 'danger', text: 'Confirm' }],
             tools: { setDialogShown, dispatch },
-            metadata: { itemCategory, id, parentProject: currentProjectName, parentBudget, amount, isExpense }
+            metadata: { itemCategory, id, parentProject: currentProjectName, parentBudget, amount, isExpense, removalPayload: newLogEntry }
         }));
         setDialogShown((prev) => !prev);
     }

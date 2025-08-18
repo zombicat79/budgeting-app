@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { addBudget } from "./budgetReducer";
-import { growProject, updateProject } from '../projects/projectReducer';
+import { growProject, updateProject, updateLog } from '../projects/projectReducer';
 import useError from './../../hooks/useError';
+import useLog from '../../hooks/useLog';
 
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -19,6 +20,7 @@ function NewBudget() {
     const { setIsLoading } = useContext(LoaderContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const newLogEntry = useLog('created', 'budget');
     const { error, msg, handleError } = useError();
     const currentProject = useSelector((store) => store.projects.current);
 
@@ -68,6 +70,8 @@ function NewBudget() {
         dispatch(addBudget({ parentProject: currentProject.name, budget: newBudget }));
         dispatch(growProject({ name: newBudget.name, id: newBudget.id }));
         dispatch(updateProject({ updateType: 'addition', amount: newBudget.initialBalance }));
+        newLogEntry.assetData = newBudget;
+        dispatch(updateLog(newLogEntry));
     }
 
     return (

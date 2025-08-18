@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 import { addEntry } from "./entryReducer";
 import { updateBudget } from './../budgets/budgetReducer';
+import { updateLog } from '../projects/projectReducer';
 import useError from './../../hooks/useError';
+import useLog from '../../hooks/useLog';
 
 import Input from "../../ui/Input";
 import Radio from "../../ui/Radio";
@@ -24,6 +26,7 @@ function NewEntry() {
     const navigate = useNavigate();
     const { budgetId } = useParams();
     const { error, msg, handleError } = useError();
+    const newLogEntry = useLog('created', 'entry');
     const currentProject = useSelector((state) => state.projects.current);
     const currentBudget = useSelector((state) => {
         const allBudgets = state.budgets[currentProject.name];
@@ -80,6 +83,8 @@ function NewEntry() {
             income: newEntry.isExpense ? 0 : Number(newEntry.amount), 
             expenses: newEntry.isExpense ? Number(newEntry.amount) : 0 
         }));
+        newLogEntry.assetData = newEntry;
+        dispatch(updateLog(newLogEntry));
     }
 
     function handleCategories(value) {

@@ -3,6 +3,7 @@ import { DialogContext } from '../contexts/DialogContext';
 import { LoaderContext } from '../contexts/LoaderContext';
 import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
+import useLog from './../hooks/useLog';
 
 import Button from '../ui/Button';
 import MenuOption from '../ui/MenuOption';
@@ -14,6 +15,9 @@ function Dashboard() {
     const { setDialogShown, setDialogContent } = useContext(DialogContext);
     const { setIsLoading } = useContext(LoaderContext);
     const dispatch = useDispatch();
+    // Log project termination enabling
+    const newLogEntry = useLog('terminated', 'project')
+    newLogEntry.assetData = currentProject;
 
     function confirmTermination(itemCategory) {
         setDialogContent(DialogBox({
@@ -24,7 +28,7 @@ function Dashboard() {
             ],
             actions: [{ actionId: 1, type: 'regular', text: 'Cancel' }, { actionId: 2, type: 'danger', text: 'Confirm' }],
             tools: { setDialogShown, setIsLoading, dispatch },
-            metadata: { itemCategory }
+            metadata: { itemCategory, removalPayload: newLogEntry }
         }));
         setDialogShown((prev) => !prev);
     }

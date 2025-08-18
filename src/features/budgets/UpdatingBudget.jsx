@@ -1,11 +1,11 @@
 import { useRef, useEffect, useContext } from 'react';
 import { LoaderContext } from '../../contexts/LoaderContext';
-import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { modifyBudget } from './budgetReducer';
-import { updateProject } from '../projects/projectReducer';
+import { updateProject, updateLog } from '../projects/projectReducer';
 import { useNavigate } from 'react-router';
 import useError from './../../hooks/useError';
+import useLog from '../../hooks/useLog';
 
 import Button from '../../ui/Button';
 
@@ -19,6 +19,7 @@ function UpdatingBudget({ budgetData, tools }) {
     const currentProject = useSelector(store => store.projects.current);
     const allBudgets = useSelector(store => store.budgets);
     const { error, msg, handleError } = useError();
+    const newLogEntry = useLog('updated', 'budget');
     const { setIsLoading } = useContext(LoaderContext);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -79,6 +80,8 @@ function UpdatingBudget({ budgetData, tools }) {
             budget: currentBudget, 
             priorBalance: budgetData.expenses - budgetData.income 
         }))
+        newLogEntry.assetData = currentBudget;
+        dispatch(updateLog(newLogEntry));
     }
 
     return (

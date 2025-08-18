@@ -25,6 +25,17 @@ const projectSlice = createSlice({
                 state.current.availableAllowance += action.payload.amount;
             }
         },
+        updateLog: (state, action) => {
+            if (action.payload.assetData.logs?.length > 0) {
+                state.past.forEach((el) => {
+                    if (el.name === action.payload.assetData.name) {
+                        el.logs.push(action.payload)
+                    }
+                });
+            } else {
+                state.current.logs.push(action.payload);
+            }
+        },
         growProject: (state, action) => {
             state.current.attachedBudgets.push(action.payload);
         },
@@ -41,5 +52,5 @@ const projectSlice = createSlice({
     }
 })
 
-export const { addProject, updateProject, growProject, curtailProject, closeProject } = projectSlice.actions;
+export const { addProject, updateProject, updateLog, growProject, curtailProject, closeProject } = projectSlice.actions;
 export default projectSlice.reducer;

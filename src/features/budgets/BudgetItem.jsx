@@ -2,6 +2,7 @@ import { useState, useContext, useCallback } from "react";
 import { DialogContext } from "../../contexts/DialogContext";
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router';
+import useLog from "./../../hooks/useLog";
 
 import Button from './../../ui/Button'
 import DialogBox from "../../ui/DialogBox";
@@ -15,6 +16,9 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
     const dispatch = useDispatch();
     const { setDialogShown, setDialogContent } = useContext(DialogContext);
     const { id, name, entries, startDate, endDate, expired, outOfBounds, initialBalance } = budgetData;
+    // Log budget deletion enabling
+    const newLogEntry = useLog('deleted', 'budget')
+    newLogEntry.assetData = budgetData;
 
     const buildCSSClasses = useCallback((baseClass) => {
         let classes = baseClass;
@@ -36,7 +40,7 @@ function BudgetItem({ budgetData, currentProjectName, last }) {
             ],
             actions: [{ actionId: 1, type: 'regular', text: 'Cancel' }, { actionId: 2, type: 'danger', text: 'Confirm' }],
             tools: { setDialogShown, dispatch },
-            metadata: { itemCategory, id, currentProjectName, initialBalance }
+            metadata: { itemCategory, id, currentProjectName, initialBalance, removalPayload: newLogEntry }
         }));
         setDialogShown((prev) => !prev);
     }
