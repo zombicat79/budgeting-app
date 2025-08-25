@@ -83,7 +83,12 @@ function NewEntry() {
             income: newEntry.isExpense ? 0 : Number(newEntry.amount), 
             expenses: newEntry.isExpense ? Number(newEntry.amount) : 0 
         }));
-        newLogEntry.assetData = newEntry;
+
+        // PROJECT LOG UPDATE
+        newLogEntry = {
+            ...newEntry,
+            parentBudget: { id: currentBudget.id, name: currentBudget.name }
+        };
         dispatch(updateLog(newLogEntry));
     }
 

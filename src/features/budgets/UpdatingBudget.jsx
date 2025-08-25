@@ -12,6 +12,7 @@ import Button from '../../ui/Button';
 import validate from './../../utils/validation/form-validation';
 import { reverseDateFormat } from '../../utils/conversion/string-management';
 import { goTop } from '../../utils/layout/scroll-management';
+import compareObjects from '../../utils/validation/obj-comparison';
 
 function UpdatingBudget({ budgetData, tools }) {
     const { name, initialBalance, income, expenses, startDate, endDate, entries, id } = budgetData;
@@ -80,7 +81,10 @@ function UpdatingBudget({ budgetData, tools }) {
             budget: currentBudget, 
             priorBalance: budgetData.expenses - budgetData.income 
         }))
+
+        // PROJECT LOG UPDATE
         newLogEntry.assetData = currentBudget;
+        newLogEntry.assetData.updateDetails = compareObjects(budgetData, currentBudget);
         dispatch(updateLog(newLogEntry));
     }
 

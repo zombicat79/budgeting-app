@@ -15,6 +15,7 @@ import { incomeCategories, expenditureCategories } from './../../data/categories
 import validate from './../../utils/validation/form-validation';
 import { capitaliseFirst, reverseDateFormat } from './../../utils/conversion/string-management';
 import { goTop } from '../../utils/layout/scroll-management';
+import compareObjects from '../../utils/validation/obj-comparison';
 
 function UpdatingEntry({ entryData, tools }) {
     const { setIsLoading } = useContext(LoaderContext);
@@ -74,7 +75,13 @@ function UpdatingEntry({ entryData, tools }) {
             oldAmount: amount, 
             newAmount: Number(currentEntry.amount) 
         }));
-        newLogEntry.assetData = currentEntry;
+
+        // PROJECT LOG UPDATE
+        newLogEntry.assetData = { 
+            ...currentEntry,
+            parentBudget: { id: currentBudget.id, name: currentBudget.name },
+            updateDetails: compareObjects(entryData, currentEntry)
+        };
         dispatch(updateLog(newLogEntry));
     }
 

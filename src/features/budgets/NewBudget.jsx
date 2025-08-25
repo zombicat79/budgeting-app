@@ -70,6 +70,8 @@ function NewBudget() {
         dispatch(addBudget({ parentProject: currentProject.name, budget: newBudget }));
         dispatch(growProject({ name: newBudget.name, id: newBudget.id }));
         dispatch(updateProject({ updateType: 'addition', amount: newBudget.initialBalance }));
+        
+        // PROJECT LOG UPDATE
         newLogEntry.assetData = newBudget;
         dispatch(updateLog(newLogEntry));
     }

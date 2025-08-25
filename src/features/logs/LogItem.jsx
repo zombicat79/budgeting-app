@@ -13,7 +13,12 @@ function LogItem({ logData }) {
             identifierClasses += " text-teal-500 border-teal-500"
             containerClasses += " w-[90%]"
             switch(logData.actionType) {
-                case "created":
+                case "updated":
+                    break;
+                case "deleted":
+                    break;
+                default:
+                    // case "created"
                     operationDetails = 
                     <>
                         <span className="font-semibold">* Created with ID: </span><span>{logData.assetData.id}</span><br/>
@@ -21,25 +26,39 @@ function LogItem({ logData }) {
                         <span className="font-semibold">* Allocated an amount of: </span><span>{logData.assetData.initialBalance} €</span><br/>
                         <span className="font-semibold">* Set to cover period: </span><span>{logData.assetData.startDate} to {logData.assetData.endDate}</span>
                     </>
-                    break;
-                default:
             }
             break;
         case "entry":
             identifierClasses += " text-orange-800 border-orange-800"
             containerClasses += " w-[80%]"
+            switch(logData.actionType) {
+                case "updated":
+                    break;
+                case "deleted":
+                    break;
+                default:
+                    // case "created"
+                    operationDetails = 
+                    <>
+                        <span className="font-semibold">* New {logData.assetData.isExpense ? 'EXPENSE' : 'INCOME' } registered: </span><span>{logData.assetData.isExpense ? '-' : ''}{logData.assetData.amount} € under the category of {logData.assetData.category.toUpperCase()}</span><br/>
+                        <span className="font-semibold">* Entry named as: </span><span>{logData.assetData.name.toUpperCase()}</span><br/>
+                        <span className="font-semibold">* Benlongs to: </span><span>{logData.assetData.parentBudget.name} budget &lpar;ID: {logData.assetData.parentBudget.id}&rpar;</span><br/>
+                    </>
+            }
             break;
         default:
             // case "project"
             identifierClasses += " text-yellow-300 border-yellow-300"
             switch(logData.actionType) {
-                case "created":
-                    operationDetails = 
-                    <>
-                    <span className="font-semibold">* Total amount of money to be tracked: </span><span>{logData.assetData.cashAllowance} €</span>
-                    </>
+                case "deleted":
                     break;
                 default:
+                    // case "created"
+                    operationDetails = 
+                    <>
+                    <span className="font-semibold">* Total amount of money to be tracked: </span><span>{logData.assetData.cashAllowance} €</span><br/>
+                    <span className="font-semibold">* Tracking window ends on: </span><span>{logData.assetData.expiryDate}</span>
+                    </>
             }
     }
 
